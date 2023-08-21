@@ -3,10 +3,15 @@ package com.tranthai.tranthaistore.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.tranthai.tranthaistore.model.Bill;
 import com.tranthai.tranthaistore.model.Category;
 import com.tranthai.tranthaistore.model.Product;
@@ -48,13 +53,19 @@ public class AdminController {
     }
 
     @GetMapping("/products")
-    public String getProducts(Model model){
-        // model.addAttribute("products", this.productService.getAllProduct());
-           
+    public String getProducts(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model){
+        // model.addAttribute("products", this.productService.getAllProduct());       
+        if (page <= 0) {
+            page = 1;
+        }
         List<Product> products = (List<Product>) model.getAttribute("products");
         if (products == null) {
-            products = this.productService.getAllProduct();
-            model.addAttribute("products", products);
+            // products = this.productService.getAllProduct();
+            Pageable pageable = PageRequest.of(page - 1, 10);
+            Page<Product> productPage = this.productService.getAllProductPage(pageable);
+            model.addAttribute("products", productPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", productPage.getTotalPages());
         }
         return "products";
     }

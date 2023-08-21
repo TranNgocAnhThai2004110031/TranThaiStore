@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tranthai.tranthaistore.model.Product;
@@ -43,6 +45,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<Product> searchProduct(String keyword) {
         return this.productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword);
+    }
+
+    @Override
+    public Page<Product> getAllProductPage(Pageable pageable) {
+        return this.productRepository.findAll(pageable);
     }
     
 }
