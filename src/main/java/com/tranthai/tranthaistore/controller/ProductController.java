@@ -1,6 +1,9 @@
 package com.tranthai.tranthaistore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +66,8 @@ public class ProductController {
 
     @GetMapping("/admin/products/search")
     public String searchProduct(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("products", this.productService.searchProduct(keyword));
+        // redirectAttributes.addFlashAttribute("products", this.productService.searchProduct(keyword));
+        redirectAttributes.addAttribute("keyword", keyword);
         return "redirect:/admin/products";
     }
     

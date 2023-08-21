@@ -51,5 +51,10 @@ public class ProductServiceImpl implements ProductService{
     public Page<Product> getAllProductPage(Pageable pageable) {
         return this.productRepository.findAll(pageable);
     }
+
+    @Override
+    public Page<Product> searchProductPage(String keyword, Pageable pageable) {
+        return this.productRepository.searchProducts(keyword, pageable);
+    }
     
 }

@@ -37,9 +37,14 @@ public class ShopController {
     private CategoryService categoryService;
 
     @ModelAttribute("email")
-    public String getCurrentEmail() {
-        return userHelper.getCurrentUsername();
+    public String getCurrentEmail(HttpSession session) {
+        String email = userHelper.getCurrentUsername();
+        if (!"anonymousUser".equals(email)) {
+            session.setAttribute("email", email);
+        }
+        return email;
     }
+
 
     @ModelAttribute("userId")
     public Long getCurrentUserId() {
@@ -88,7 +93,7 @@ public class ShopController {
     }
 
     @GetMapping("/shop")
-    public String shop(Model model) {
+    public String shop(Model model, HttpSession session) {
         model.addAttribute("categories", this.categoryService.getAllCategory());
         model.addAttribute("products", this.productService.getAllProduct());
         return "shop";
@@ -105,9 +110,18 @@ public class ShopController {
     public String search(@RequestParam String keyword, Model model) {
         keyword = keyword.trim();
         List<Product> results = this.productService.searchProduct(keyword);
-        model.addAttribute("categories", categoryService.getAllCategory());
+        model.addAttribute("categories", this.categoryService.getAllCategory());
         model.addAttribute("products", results);
 
         return "shop";
+    }
+
+    @GetMapping("/shop/viewproduct/{id}")
+    public String viewProductDetail(Model model, @PathVariable int id, HttpSession session) {
+        model.addAttribute("product", this.productService.getProductById(id).get());
+        // session.setAttribute("session", session);
+
+        return "viewProduct";
+
     }
 }

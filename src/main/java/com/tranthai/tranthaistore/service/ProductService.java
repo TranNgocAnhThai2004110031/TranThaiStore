@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import com.tranthai.tranthaistore.model.Product;
 
@@ -16,5 +17,6 @@ public interface ProductService {
     Optional<Product> getProductById(long id);
     List<Product> getAllProductByCategory(long id);
     List<Product> searchProduct(String keyword);
+    Page<Product> searchProductPage(@Param("keyword") String keyword, Pageable pageable);
     
 }
