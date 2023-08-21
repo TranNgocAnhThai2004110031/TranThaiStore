@@ -28,7 +28,7 @@ public class CategoryController {
     @GetMapping("/admin/category/add")
     public String getCategory(Model model){
         model.addAttribute("categoryDTO", new CategoryDTO());
-        return "categoriesAdd";
+        return "categoryAdd";
     }
 
     @PostMapping("/admin/category/add")
@@ -46,16 +46,16 @@ public class CategoryController {
     @GetMapping("/admin/category/{id}")
     public String getCategoryById(@PathVariable int id, Model model) {
         Category category = categoryService.getCategoryById(id).get();
-        model.addAttribute("category", category);
-        return "categoriesAdd";
+        model.addAttribute("categoryDTO", this.categoryConverter.toDTO(category));
+        return "categoryAdd";
     }
 
-    @GetMapping("/categories/search")
+    @GetMapping("/admin/categories/search")
     public String searchCategory(@RequestParam String keyword, RedirectAttributes redirectAttributes) {
         List<Category> results = categoryService.searchCategory(keyword);
         redirectAttributes.addFlashAttribute("categories", results);
 
-        return "categories";
+        return "redirect:/admin/categories";
     }
 
 }

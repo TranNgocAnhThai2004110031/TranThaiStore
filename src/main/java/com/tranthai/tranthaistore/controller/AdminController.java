@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.tranthai.tranthaistore.model.Bill;
 import com.tranthai.tranthaistore.model.Category;
 import com.tranthai.tranthaistore.model.Product;

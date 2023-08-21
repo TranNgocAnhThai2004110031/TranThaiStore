@@ -27,14 +27,14 @@ public class ProductController {
     @Autowired 
     private ProductConverter productConverter;
 
-    @GetMapping("/admin/products/add")
+    @GetMapping("/admin/product/add")
     public String getProduct(Model model) {
         model.addAttribute("productDTO", new ProductDTO());
         model.addAttribute("categories", this.categoryService.getAllCategory());
         return "productAdd";
     }
 
-    @PostMapping("/admin/products/add")
+    @PostMapping("/admin/product/add")
     public String addProduct(@ModelAttribute("productDTO") ProductDTO productDTO) {
         Product product = this.productConverter.toEntity(productDTO);        
         this.productService.addProduct(product);
