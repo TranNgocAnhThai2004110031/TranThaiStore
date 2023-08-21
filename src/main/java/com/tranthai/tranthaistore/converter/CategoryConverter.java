@@ -1,11 +1,11 @@
 package com.tranthai.tranthaistore.converter;
 
-import javax.persistence.Converter;
+import org.springframework.stereotype.Component;
 
 import com.tranthai.tranthaistore.dto.CategoryDTO;
 import com.tranthai.tranthaistore.model.Category;
 
-@Converter
+@Component
 public class CategoryConverter {
     public Category toEntity(CategoryDTO categoryDTO){
         Category category = new Category();
