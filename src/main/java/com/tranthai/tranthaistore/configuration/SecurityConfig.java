@@ -1,5 +1,7 @@
 package com.tranthai.tranthaistore.configuration;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,10 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.tranthai.tranthaistore.controller.CartController;
 import com.tranthai.tranthaistore.service.UserService;
 
 @Configuration
@@ -21,44 +25,62 @@ public class SecurityConfig {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CartController cartController;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    // Cấu hình quyền truy cập và bảo mật cho các đường dẫn trong ứng dụng
-    http.authorizeRequests()
-        .antMatchers("/register**", "/", "/shop/**", "/cart") // Các đường dẫn này được cấp quyền truy cập cho tất cả
-        .permitAll()
-        .antMatchers("/admin/**").hasRole("ADMIN") // Đường dẫn bắt đầu bằng "/admin" yêu cầu quyền "ADMIN"
-        .antMatchers("/users/**").hasRole("USER") // Đường dẫn bắt đầu bằng "/users" yêu cầu quyền "USER"
-        .anyRequest().authenticated() // Các request còn lại yêu cầu đã đăng nhập
-        .and()
-        .exceptionHandling()
-        .accessDeniedPage("/403") // Xử lý khi người dùng không có quyền truy cập
-        .and()
-        .formLogin()
-        .loginPage("/login") // Đường dẫn đến trang đăng nhập
-        .successHandler(new SavedRequestAwareAuthenticationSuccessHandler()) // Xử lý sau khi đăng nhập thành công
-        .defaultSuccessUrl("/") // Chuyển hướng sau khi đăng nhập thành công đến trang "/"
-        .permitAll() // Cho phép tất cả truy cập trang đăng nhập
-        .and()
-        .logout()
-        .invalidateHttpSession(true) // Hủy bỏ session sau khi đăng xuất
-        .clearAuthentication(true) // Xóa thông tin xác thực sau khi đăng xuất
-        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Đường dẫn đăng xuất
-        .logoutSuccessHandler(logoutSuccessHandler()) // Xử lý sau khi đăng xuất thành công
-        .permitAll(); // Cho phép tất cả truy cập trang đăng xuất
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // Cấu hình quyền truy cập và bảo mật cho các đường dẫn trong ứng dụng
+        http.authorizeRequests()
+                .antMatchers("/register**", "/", "/shop/**", "/cart/**") // Các đường dẫn này được cấp quyền truy cập cho
+                                                                      // tất cả
+                .permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN") // Đường dẫn bắt đầu bằng "/admin" yêu cầu quyền "ADMIN"
+                .antMatchers("/users/**").hasRole("USER") // Đường dẫn bắt đầu bằng "/users" yêu cầu quyền "USER"
+                .anyRequest().authenticated() // Các request còn lại yêu cầu đã đăng nhập
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/403") // Xử lý khi người dùng không có quyền truy cập
+                .and()
+                .formLogin()
+                .loginPage("/login") // Đường dẫn đến trang đăng nhập
+                .successHandler(new SavedRequestAwareAuthenticationSuccessHandler()) // Xử lý sau khi đăng nhập thành
+                                                                                 // công
+                //.successHandler(authenticationSuccessHandler()) // Sử dụng custom success handler                                                                 
+                // .defaultSuccessUrl("/") // Chuyển hướng sau khi đăng nhập thành công đến trang "/"
+                .permitAll() // Cho phép tất cả truy cập trang đăng nhập
+                .and()
+                .logout()
+                .invalidateHttpSession(true) // Hủy bỏ session sau khi đăng xuất
+                .clearAuthentication(true) // Xóa thông tin xác thực sau khi đăng xuất
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Đường dẫn đăng xuất
+                .logoutSuccessHandler(logoutSuccessHandler()) // Xử lý sau khi đăng xuất thành công
+                .permitAll(); // Cho phép tất cả truy cập trang đăng xuất
 
-    return http.build(); // Trả về đối tượng SecurityFilterChain đã được cấu hình
-}
+        return http.build(); // Trả về đối tượng SecurityFilterChain đã được cấu hình
+    }
 
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            // Phần xử lý sau khi đăng nhập thành công
+            HttpSession session = request.getSession();
+            CartController cartController = new CartController();
+            cartController.mergeSessionCartWithUserCart(session);
+
+            // Tiếp tục xử lý mặc định sau khi đăng nhập thành công
+            new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
+        };
+    }
 
     private LogoutSuccessHandler logoutSuccessHandler() {
         return (request, response, authentication) -> {
-            // CartController.clearCart();
+            CartController.clearCart();
             response.sendRedirect("/login");
         };
     }
@@ -72,7 +94,8 @@ protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     }
     // @Bean
     // public UserDetailsService userDetailsService() {
-    //     return new YourUserDetailsService(); // Thay YourUserDetailsService() bằng lớp cung cấp thông tin người dùng của bạn
+    // return new YourUserDetailsService(); // Thay YourUserDetailsService() bằng
+    // lớp cung cấp thông tin người dùng của bạn
     // }
 
     @Bean

@@ -1,6 +1,8 @@
 package com.tranthai.tranthaistore.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,10 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tranthai.tranthaistore.model.Product;
 import com.tranthai.tranthaistore.model.User;
+import com.tranthai.tranthaistore.service.CartService;
 import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
 import com.tranthai.tranthaistore.service.UserService;
-import com.tranthai.tranthaistore.util.UserHelper;
+import com.tranthai.tranthaistore.utils.UserHelper;
 
 @Controller
 public class ShopController {
@@ -35,6 +38,9 @@ public class ShopController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private CartService cartService;
 
     @ModelAttribute("email")
     public String getCurrentEmail(HttpSession session) {
@@ -89,6 +95,14 @@ public class ShopController {
     public String home(Model model, HttpSession session) {
         model.addAttribute("products", this.productService.getAllProduct());
         model.addAttribute("categories", this.categoryService.getAllCategory());
+        // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
+        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new HashMap<>();
+            session.setAttribute("cart", cart);
+        }
+
+        this.cartService.updateCartTotalsAndSession(session, cart);
         return "home";
     }
 
@@ -96,6 +110,14 @@ public class ShopController {
     public String shop(Model model, HttpSession session) {
         model.addAttribute("categories", this.categoryService.getAllCategory());
         model.addAttribute("products", this.productService.getAllProduct());
+        // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
+        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new HashMap<>();
+            session.setAttribute("cart", cart);
+        }
+
+        this.cartService.updateCartTotalsAndSession(session, cart);
         return "shop";
     }
 
