@@ -23,11 +23,11 @@ public class BillConverter {
 
     public Bill toEntity(BillDTO billDTO){
         Bill bill = new Bill();
-        bill.setId(billDTO.getId());
+        // bill.setId(billDTO.getId());
         bill.setFirstName(billDTO.getFirstName());
         bill.setLastName(billDTO.getLastName());
         bill.setAddress(billDTO.getAddress());
-        bill.setTownCity(billDTO.getTown_city());
+        bill.setTownCity(billDTO.getTownCity());
         bill.setPhoneNumber(billDTO.getPhoneNumber());;
         bill.setEmail(billDTO.getEmail());
         bill.setUser(this.userService.getUserById(billDTO.getUserId()).get());
@@ -44,7 +44,7 @@ public class BillConverter {
         billDTO.setFirstName(bill.getFirstName());
         billDTO.setLastName(bill.getLastName());
         billDTO.setAddress(bill.getAddress());
-        billDTO.setTown_city(bill.getTownCity());
+        billDTO.setTownCity(bill.getTownCity());
         billDTO.setPhoneNumber(bill.getPhoneNumber());;
         billDTO.setEmail(bill.getEmail());
         billDTO.setUserId(bill.getUser().getId());

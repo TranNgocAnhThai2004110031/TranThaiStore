@@ -187,7 +187,7 @@ public class CartController {
     public String updateCart(@PathVariable("id") Long id,
         @RequestParam("quantity") int quantity, HttpSession session) {
 
-        Product product = this.productService.getProductById(id).get();
+        // Product product = this.productService.getProductById(id).get();
         cart = (Map<Long, Integer>) session.getAttribute("cart");
         String email = (String) session.getAttribute("email");
 

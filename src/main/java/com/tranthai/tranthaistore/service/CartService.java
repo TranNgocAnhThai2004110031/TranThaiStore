@@ -18,6 +18,6 @@ public interface CartService {
     Map<Long, Integer> getOrCreateCartFromSession(HttpSession session);
     void updateCartItemQuantity(Map<Long, Integer> cart, Long productId, int quantity, boolean update);
     void updateCartTotalsAndSession(HttpSession session, Map<Long, Integer> cart);
-    // void removeCart(Cart cart);
+    void removeCartById(Long id);
     // void updateCart(Cart cart);
 }

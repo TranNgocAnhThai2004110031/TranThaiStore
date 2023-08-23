@@ -102,6 +102,11 @@ public class CartServiceImpl implements CartService{
         session.setAttribute("total", total);
     }
 
+    @Override
+    public void removeCartById(Long id) {
+        this.cartRepository.deleteById(id);
+    }
+
     // @Override
     // public void updateCart(Cart cart) {
     //     this.cartRepository

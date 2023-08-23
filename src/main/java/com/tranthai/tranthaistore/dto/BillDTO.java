@@ -12,7 +12,7 @@ public class BillDTO {
     private String firstName;
     private String lastName;
     private String address;
-    private String town_city;
+    private String townCity;
     private String phoneNumber;
     private String email;
     private String addInformation;

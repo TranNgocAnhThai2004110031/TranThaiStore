@@ -22,6 +22,7 @@ import com.tranthai.tranthaistore.model.Bill;
 import com.tranthai.tranthaistore.model.Product;
 import com.tranthai.tranthaistore.model.User;
 import com.tranthai.tranthaistore.service.BillService;
+import com.tranthai.tranthaistore.service.CartService;
 import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
 import com.tranthai.tranthaistore.service.UserService;
@@ -39,6 +40,9 @@ public class BillController {
 
     @Autowired 
     private CategoryService categoryService;
+
+    @Autowired 
+    private CartService cartService;
 
     @Autowired 
     private UserService userService;
@@ -87,24 +91,27 @@ public class BillController {
 
     @GetMapping("/bill")
     public String getBill(Model model, HttpSession session) {
+        String email = (String) session.getAttribute("email");
+        User user = this.userService.getUserByEmail(email);
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
         if (cart == null || cart.isEmpty()) {
             return "redirect:/cart";
         }
         model.addAttribute("billDTO", new BillDTO());
-        cart.clear();
-        String email = (String) session.getAttribute("email");
-        User user = this.userService.getUserByEmail(email);
         session.setAttribute("userId", user.getId());
+        session.setAttribute("cart", cart);
 
         return "checkout";
     }
 
     @PostMapping("/bill")
-    public String addBill(@ModelAttribute("billDTO") BillDTO billDTO, HttpSession session, Model model) {
-        Bill bill = this.billConverter.toEntity(billDTO);
+    public String addBill(@ModelAttribute("billDTO") BillDTO billDTO, Model model, HttpSession session) {
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-
+        Bill bill = new Bill();
+        bill = this.billConverter.toEntity(billDTO);
+        if (cart == null || cart.isEmpty()) {
+            return "redirect:/cart";
+        }
         List<String> productName = new ArrayList<>();
         List<Product> products = new ArrayList<Product>();
         for(Map.Entry<Long, Integer> entry : cart.entrySet()){
@@ -112,6 +119,8 @@ public class BillController {
             productName.add(product.getName() + " x " + entry.getValue());
             product.setQuantity(product.getQuantity() - entry.getValue());
             this.productService.addProduct(product);
+            product.setQuantity(entry.getValue());
+            products.add(product);
         }
 
         double total = (double) session.getAttribute("total");
@@ -119,8 +128,8 @@ public class BillController {
         bill.setProductName(productName);
         bill.setPrice(total);
         this.billService.addBill(bill);
-        model.addAttribute("bill", bill);
-        model.addAttribute("result", bill.getId());
+        BillDTO billDTOCurrennt = this.billConverter.toDTO(bill);
+        model.addAttribute("bill", billDTOCurrennt);
         model.addAttribute("productList", products);
         model.addAttribute("productName", productName);
         model.addAttribute("total", total);
@@ -131,6 +140,8 @@ public class BillController {
         User user = this.userService.getUserByEmail(email);
         session.setAttribute("userId", user.getId());
         session.setAttribute("cartCount", cart.size());
+        Long cartId = this.cartService.getCartByUserId(user.getId()).getId();
+        this.cartService.removeCartById(cartId);
 
         return "orderPlaced";
     }
