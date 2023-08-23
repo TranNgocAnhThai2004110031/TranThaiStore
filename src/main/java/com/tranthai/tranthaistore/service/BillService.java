@@ -13,5 +13,7 @@ public interface BillService {
 
     Optional<Bill> getBillById(Long id);
 
+    List<Bill> getBillByUserId(Long id);
+
     List<Bill> searchBill(String keyword);
 }

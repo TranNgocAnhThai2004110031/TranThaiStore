@@ -7,6 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tranthai.tranthaistore.model.Cart;
 import com.tranthai.tranthaistore.model.Product;
@@ -118,22 +122,30 @@ public class ShopController {
     }
 
     @GetMapping("/shop")
-    public String shop(Model model, HttpSession session) {
+    public String shop(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, 
+        @RequestParam(value = "keyword", required = false) String keyword, Model model, HttpSession session) {
+
+        if (page <= 0) {
+            page = 1;
+        }
+
+        List<Product> products = (List<Product>) model.getAttribute("products");
+        if (products == null || keyword != null) {
+            Pageable pageable = PageRequest.of(page - 1, 10);
+            Page<Product> productPage;
+            
+            if (keyword != null) {
+                productPage = this.productService.searchProductPage(keyword, pageable);
+            } else {
+                productPage = this.productService.getAllProductPage(pageable);
+            }
+            model.addAttribute("products", productPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", productPage.getTotalPages());
+        } 
         model.addAttribute("categories", this.categoryService.getAllCategory());
-        model.addAttribute("products", this.productService.getAllProduct());
         // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        // if (cart == null) {
-        //     cart = new HashMap<>();
-        //     session.setAttribute("cart", cart);
-        // }
-        // String email = (String) session.getAttribute("email");
-        // if (email != null) {
-        //     Cart cartCurrent = this.cartService.getOrCreateCartForUser(this.userService.getUserByEmail(email));
-        //     cart = cartCurrent.getItems();
-        //     this.cartService.updateCartTotalsAndSession(session, cart);
-        //     session.setAttribute("cart", cart);
-        // }
         this.cartUtil.handleCartUpdate(session, cart);
         return "shop";
     }
@@ -146,13 +158,12 @@ public class ShopController {
     }
 
     @GetMapping("/shop/search")
-    public String search(@RequestParam String keyword, Model model) {
+    public String search(@RequestParam String keyword, RedirectAttributes redirectAttributes) {
         keyword = keyword.trim();
         List<Product> results = this.productService.searchProduct(keyword);
-        model.addAttribute("categories", this.categoryService.getAllCategory());
-        model.addAttribute("products", results);
-
-        return "shop";
+        // redirectAttributes.addAttribute("categories", this.categoryService.getAllCategory());
+        redirectAttributes.addFlashAttribute("products", results);
+        return "redirect:/shop";
     }
 
     @GetMapping("/shop/viewproduct/{id}")

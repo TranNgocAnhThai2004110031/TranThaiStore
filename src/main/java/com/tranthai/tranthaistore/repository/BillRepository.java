@@ -11,4 +11,6 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrPhoneNumberContainingIgnoreCase(
             String firstName, String lastName, String email, String phoneNumber);
 
+    List<Bill> findByUser_id(Long id);
+
 }

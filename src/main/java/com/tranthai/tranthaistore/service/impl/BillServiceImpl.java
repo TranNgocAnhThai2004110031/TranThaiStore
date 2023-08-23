@@ -41,5 +41,10 @@ public class BillServiceImpl implements BillService{
         return this.billRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrPhoneNumberContainingIgnoreCase(
                         keyword, keyword, keyword, keyword);
     }
+
+    @Override
+    public List<Bill> getBillByUserId(Long id) {
+        return this.billRepository.findByUser_id(id);
+    }
      
 }

@@ -26,6 +26,7 @@ import com.tranthai.tranthaistore.service.CartService;
 import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
 import com.tranthai.tranthaistore.service.UserService;
+import com.tranthai.tranthaistore.utils.UserUtil;
 
 @Controller
 public class BillController {
@@ -47,6 +48,9 @@ public class BillController {
     @Autowired 
     private UserService userService;
 
+    @Autowired
+    private UserUtil userUtil;
+
     @GetMapping("/admin/bills/search")
     public String searchBill(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes){
         List<Bill> bills = this.billService.searchBill(keyword);
@@ -64,17 +68,25 @@ public class BillController {
         return "viewBillAdmin";
     }
 
-    @GetMapping("/history/{id}")
-    public String history(@PathVariable("id") Long id, Model model){
-        List<Bill> bills = this.billService.getAllBill();
-        List<Bill> billCurrents = new ArrayList<>();
-        for (Bill bill : bills) {
-            if (bill.getUser().getId() == id) {
-                billCurrents.add(bill);
-            }
+    @GetMapping("/history")
+    public String history(Model model, HttpSession session) {
+        // List<Bill> bills = this.billService.getAllBill();
+        // List<Bill> billCurrents = new ArrayList<>();
+        // for (Bill bill : bills) {
+        //     if (bill.getUser().getId() == id) {
+        //         billCurrents.add(bill);
+        //     }
+        // }
+        // model.addAttribute("bills", billCurrents);
+        // model.addAttribute("categories", this.categoryService.getAllCategory());
+
+        String email = this.userUtil.getCurrentUsername();
+        if (email != null) {
+            User user = this.userService.getUserByEmail(email);
+            List<Bill> bills = this.billService.getBillByUserId(user.getId());
+            model.addAttribute("bills", bills);
+            model.addAttribute("categories", this.categoryService.getAllCategory());
         }
-        model.addAttribute("bills", billCurrents);
-        model.addAttribute("categories", this.categoryService.getAllCategory());
         
         return "history";
     }
@@ -85,6 +97,9 @@ public class BillController {
         List<Product> products = this.productService.getAllProduct();
         List<String> productName = billDTO.getProductName();
         this.billConverter.processProductInfo(productName, products, model, id);
+
+        model.addAttribute("bill", billDTO);
+        model.addAttribute("products", products);
 
         return "viewBill";
     }
