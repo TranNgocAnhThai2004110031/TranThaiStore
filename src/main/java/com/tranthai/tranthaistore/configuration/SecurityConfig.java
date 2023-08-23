@@ -18,15 +18,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.tranthai.tranthaistore.controller.CartController;
 import com.tranthai.tranthaistore.service.UserService;
+import com.tranthai.tranthaistore.utils.UserUtil;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private CartController cartController;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -37,8 +35,7 @@ public class SecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // Cấu hình quyền truy cập và bảo mật cho các đường dẫn trong ứng dụng
         http.authorizeRequests()
-                .antMatchers("/register**", "/", "/shop/**", "/cart/**") // Các đường dẫn này được cấp quyền truy cập cho
-                                                                      // tất cả
+                .antMatchers("/register**", "/", "/shop/**", "/cart/**") // Các đường dẫn này được cấp quyền truy cập cho tất cả
                 .permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN") // Đường dẫn bắt đầu bằng "/admin" yêu cầu quyền "ADMIN"
                 .antMatchers("/users/**").hasRole("USER") // Đường dẫn bắt đầu bằng "/users" yêu cầu quyền "USER"
@@ -49,10 +46,8 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/login") // Đường dẫn đến trang đăng nhập
-                .successHandler(new SavedRequestAwareAuthenticationSuccessHandler()) // Xử lý sau khi đăng nhập thành
-                                                                                 // công
-                //.successHandler(authenticationSuccessHandler()) // Sử dụng custom success handler                                                                 
-                // .defaultSuccessUrl("/") // Chuyển hướng sau khi đăng nhập thành công đến trang "/"
+                .successHandler(new SavedRequestAwareAuthenticationSuccessHandler()) // Xử lý sau khi đăng nhập thành công                                                               
+                .defaultSuccessUrl("/") // Chuyển hướng sau khi đăng nhập thành công đến trang "/"
                 .permitAll() // Cho phép tất cả truy cập trang đăng nhập
                 .and()
                 .logout()
@@ -63,19 +58,6 @@ public class SecurityConfig {
                 .permitAll(); // Cho phép tất cả truy cập trang đăng xuất
 
         return http.build(); // Trả về đối tượng SecurityFilterChain đã được cấu hình
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return (request, response, authentication) -> {
-            // Phần xử lý sau khi đăng nhập thành công
-            HttpSession session = request.getSession();
-            CartController cartController = new CartController();
-            cartController.mergeSessionCartWithUserCart(session);
-
-            // Tiếp tục xử lý mặc định sau khi đăng nhập thành công
-            new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
-        };
     }
 
     private LogoutSuccessHandler logoutSuccessHandler() {

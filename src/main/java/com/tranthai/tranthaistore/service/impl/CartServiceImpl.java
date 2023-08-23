@@ -71,17 +71,22 @@ public class CartServiceImpl implements CartService{
 
     @Override
     public void updateCartItemQuantity(Map<Long, Integer> cart, Long productId, int quantity, boolean update) {
-        if (cart.containsKey(productId)) {
-            int currentQuantity = cart.get(productId);
-            if (update) {
-                currentQuantity = quantity;
-            } else {
-                currentQuantity += quantity;
-            }
-            cart.put(productId, currentQuantity);
+        if (quantity == 0 && cart.containsKey(productId)) {
+            cart.remove(productId);
         } else {
-            cart.put(productId, quantity);
+            if (cart.containsKey(productId)) {
+                int currentQuantity = cart.get(productId);
+                if (update) {
+                    currentQuantity = quantity;
+                } else {
+                    currentQuantity += quantity;
+                }
+                cart.put(productId, currentQuantity);
+            } else {
+                cart.put(productId, quantity);
+            }
         }
+        
     }
 
     @Override
@@ -96,7 +101,6 @@ public class CartServiceImpl implements CartService{
                 total += product.getPrice() * entry.getValue();
             }
         }
-        System.out.println(total);
         session.setAttribute("cart", cart);
         session.setAttribute("cartCount", count);
         session.setAttribute("total", total);

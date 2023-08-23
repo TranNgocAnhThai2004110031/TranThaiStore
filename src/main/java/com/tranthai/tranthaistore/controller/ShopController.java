@@ -16,19 +16,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.tranthai.tranthaistore.model.Cart;
 import com.tranthai.tranthaistore.model.Product;
 import com.tranthai.tranthaistore.model.User;
 import com.tranthai.tranthaistore.service.CartService;
 import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
 import com.tranthai.tranthaistore.service.UserService;
-import com.tranthai.tranthaistore.utils.UserHelper;
+import com.tranthai.tranthaistore.utils.CartUtil;
+import com.tranthai.tranthaistore.utils.UserUtil;
 
 @Controller
 public class ShopController {
 
     @Autowired
-    private UserHelper userHelper;
+    private UserUtil userHelper;
 
     @Autowired
     private UserService userService;
@@ -41,6 +43,9 @@ public class ShopController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private CartUtil cartUtil;
 
     @ModelAttribute("email")
     public String getCurrentEmail(HttpSession session) {
@@ -97,12 +102,18 @@ public class ShopController {
         model.addAttribute("categories", this.categoryService.getAllCategory());
         // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new HashMap<>();
-            session.setAttribute("cart", cart);
-        }
-
-        this.cartService.updateCartTotalsAndSession(session, cart);
+        // if (cart == null) {
+        //     cart = new HashMap<>();
+        //     session.setAttribute("cart", cart);
+        // }
+        // String email = (String) session.getAttribute("email");
+        // if (email != null) {   
+        //     Cart cartCurrent = this.cartService.getOrCreateCartForUser(this.userService.getUserByEmail(email)); 
+        //     cart = cartCurrent.getItems();
+        //     this.cartService.updateCartTotalsAndSession(session, cart);
+        //     session.setAttribute("cart", cart);
+        // }
+        this.cartUtil.handleCartUpdate(session, cart);
         return "home";
     }
 
@@ -112,12 +123,18 @@ public class ShopController {
         model.addAttribute("products", this.productService.getAllProduct());
         // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new HashMap<>();
-            session.setAttribute("cart", cart);
-        }
-
-        this.cartService.updateCartTotalsAndSession(session, cart);
+        // if (cart == null) {
+        //     cart = new HashMap<>();
+        //     session.setAttribute("cart", cart);
+        // }
+        // String email = (String) session.getAttribute("email");
+        // if (email != null) {
+        //     Cart cartCurrent = this.cartService.getOrCreateCartForUser(this.userService.getUserByEmail(email));
+        //     cart = cartCurrent.getItems();
+        //     this.cartService.updateCartTotalsAndSession(session, cart);
+        //     session.setAttribute("cart", cart);
+        // }
+        this.cartUtil.handleCartUpdate(session, cart);
         return "shop";
     }
 
@@ -141,7 +158,6 @@ public class ShopController {
     @GetMapping("/shop/viewproduct/{id}")
     public String viewProductDetail(Model model, @PathVariable int id, HttpSession session) {
         model.addAttribute("product", this.productService.getProductById(id).get());
-        // session.setAttribute("session", session);
 
         return "viewProduct";
 

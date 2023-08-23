@@ -20,7 +20,7 @@ import com.tranthai.tranthaistore.model.User;
 import com.tranthai.tranthaistore.service.CartService;
 import com.tranthai.tranthaistore.service.ProductService;
 import com.tranthai.tranthaistore.service.UserService;
-import com.tranthai.tranthaistore.utils.UserHelper;
+import com.tranthai.tranthaistore.utils.UserUtil;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +44,7 @@ public class CartController {
     private ProductConverter productConverter;
 
     @Autowired
-    private UserHelper userHelper;
+    private UserUtil userHelper;
 
     @Autowired
     private CartService cartService;

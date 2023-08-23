@@ -92,13 +92,16 @@ public class BillController {
     @GetMapping("/bill")
     public String getBill(Model model, HttpSession session) {
         String email = (String) session.getAttribute("email");
-        User user = this.userService.getUserByEmail(email);
+        
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
         if (cart == null || cart.isEmpty()) {
             return "redirect:/cart";
         }
         model.addAttribute("billDTO", new BillDTO());
-        session.setAttribute("userId", user.getId());
+        if (email != null) {
+            User user = this.userService.getUserByEmail(email);
+            session.setAttribute("userId", user.getId());
+        }
         session.setAttribute("cart", cart);
 
         return "checkout";
