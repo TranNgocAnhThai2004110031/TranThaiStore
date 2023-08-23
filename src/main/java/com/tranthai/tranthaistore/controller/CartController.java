@@ -106,7 +106,7 @@ public class CartController {
         Cart cartCurrent = null;
         Map<Long, Integer> item;
 
-        if (email != null) {
+        if (email != null && !"anonymousUser".equals(email) ) {
             user = this.userService.getUserByEmail(email);
             cartCurrent = this.cartService.getOrCreateCartForUser(user);
             item = cartCurrent.getItems();
@@ -194,7 +194,7 @@ public class CartController {
         if (cart != null && cart.containsKey(id)) {
             this.cartService.updateCartItemQuantity(cart, id, quantity, true);
             this.cartService.updateCartTotalsAndSession(session, cart);
-            if (email != null) {
+            if (email != null && !"anonymousUser".equals(email)) {
                 User user = this.userService.getUserByEmail(email);
                 Cart cartCurrent = this.cartService.getOrCreateCartForUser(user);
                 cartCurrent.setItems(cart);
@@ -214,7 +214,7 @@ public class CartController {
         if (cart != null && cart.containsKey(id)) {
             cart.remove(id);
             this.cartService.updateCartTotalsAndSession(session, cart);
-            if (email != null) {
+            if (email != null && !"anonymousUser".equals(email)) {
                 User user = this.userService.getUserByEmail(email);
                 Cart cartCurrent = this.cartService.getOrCreateCartForUser(user);
                 cartCurrent.setItems(cart);

@@ -19,7 +19,7 @@ public class CartUtil {
     public void handleCartUpdate(HttpSession session, Map<Long, Integer> cart) {
         String email = (String) session.getAttribute("email");
         this.cartService.getOrCreateCartFromSession(session);
-        if (email != null) {   
+        if (email != null && !"anonymousUser".equals(email)) {   
             Cart cartCurrent = this.cartService.getOrCreateCartForUser(this.userService.getUserByEmail(email)); 
             Map<Long, Integer> currentItems = cartCurrent.getItems();
             Boolean loggedIn = (Boolean) session.getAttribute("loggedIn");

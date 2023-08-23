@@ -35,7 +35,7 @@ public class SecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // Cấu hình quyền truy cập và bảo mật cho các đường dẫn trong ứng dụng
         http.authorizeRequests()
-                .antMatchers("/register**", "/", "/shop**", "/cart/**") // Các đường dẫn này được cấp quyền truy cập cho tất cả
+                .antMatchers("/register**", "/", "/shop/**", "/shop**", "/cart/**") // Các đường dẫn này được cấp quyền truy cập cho tất cả
                 .permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN") // Đường dẫn bắt đầu bằng "/admin" yêu cầu quyền "ADMIN"
                 .antMatchers("/users/**").hasRole("USER") // Đường dẫn bắt đầu bằng "/users" yêu cầu quyền "USER"

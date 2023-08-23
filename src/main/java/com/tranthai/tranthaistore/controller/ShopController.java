@@ -130,19 +130,21 @@ public class ShopController {
         }
 
         List<Product> products = (List<Product>) model.getAttribute("products");
-        if (products == null || keyword != null) {
-            Pageable pageable = PageRequest.of(page - 1, 10);
-            Page<Product> productPage;
-            
-            if (keyword != null) {
-                productPage = this.productService.searchProductPage(keyword, pageable);
-            } else {
-                productPage = this.productService.getAllProductPage(pageable);
-            }
-            model.addAttribute("products", productPage.getContent());
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", productPage.getTotalPages());
-        } 
+        Long categoryId = (Long) model.getAttribute("categoryId");
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page<Product> productPage;
+        
+        if (keyword != null && products != null) {
+            productPage = this.productService.searchProductPage(keyword, pageable);
+        } else if (categoryId != null && products != null) {
+            productPage = this.productService.getAllProductByCategoryPage(categoryId, pageable);
+        } else {
+            productPage = this.productService.getAllProductPage(pageable);
+        }
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        
+        model.addAttribute("currentPage", page);
         model.addAttribute("categories", this.categoryService.getAllCategory());
         // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
@@ -151,10 +153,13 @@ public class ShopController {
     }
 
     @GetMapping("/shop/category/{id}")
-    public String shopByCategory(Model model, @PathVariable int id, HttpSession session) {
-        model.addAttribute("categories", this.categoryService.getAllCategory());
-        model.addAttribute("products", this.productService.getAllProductByCategory(id));
-        return "shop";
+    public String shopByCategory(RedirectAttributes redirectAttributes, @PathVariable Long id, HttpSession session) {
+        // model.addAttribute("categories", this.categoryService.getAllCategory());
+        List<Product> products = this.productService.getAllProductByCategory(id);
+        redirectAttributes.addFlashAttribute("products", products);
+        redirectAttributes.addFlashAttribute("categoryId", id);
+        
+        return "redirect:/shop";
     }
 
     @GetMapping("/shop/search")
@@ -163,6 +168,7 @@ public class ShopController {
         List<Product> results = this.productService.searchProduct(keyword);
         // redirectAttributes.addAttribute("categories", this.categoryService.getAllCategory());
         redirectAttributes.addFlashAttribute("products", results);
+        redirectAttributes.addAttribute("keyword", keyword);
         return "redirect:/shop";
     }
 
