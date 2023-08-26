@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tranthai.tranthaistore.model.Bill;
+import com.tranthai.tranthaistore.model.Brand;
 import com.tranthai.tranthaistore.model.Category;
 import com.tranthai.tranthaistore.model.Product;
 import com.tranthai.tranthaistore.model.User;
 import com.tranthai.tranthaistore.service.BillService;
+import com.tranthai.tranthaistore.service.BrandService;
 import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
 import com.tranthai.tranthaistore.service.UserService;
@@ -35,6 +37,9 @@ public class AdminController {
 
     @Autowired
     private BillService billService;
+
+    @Autowired
+    private BrandService brandService;
 
     @GetMapping()
     public String adminHome(){
@@ -117,6 +122,16 @@ public class AdminController {
             model.addAttribute("bills", bills);
         }
         return "bills";
+    }
+
+    @GetMapping("/brands")
+    public String getBrand(Model model){
+        List<Brand> brands = (List<Brand>) model.getAttribute("brand");
+        if (brands == null) {
+            brands = this.brandService.getAllBrand();
+            model.addAttribute("brands", brands);
+        }
+        return "brands";
     }
     
 }

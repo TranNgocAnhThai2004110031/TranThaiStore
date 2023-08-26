@@ -1,0 +1,9 @@
+.cart-page__cover {
+    padding: 180px 0px;
+}
+.cart__price{
+    display: flex;
+    align-items: center;
+    padding-top: 30px;
+    /* font-weight: 500; */
+}

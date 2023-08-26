@@ -22,6 +22,11 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name ="category_id", referencedColumnName = "category_id")
     private Category category;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id", referencedColumnName = "brand_id")
+    private Brand brand;
+
     @Column(columnDefinition = "DOUBLE(20,2)")
     private double price;
     @Column(length = 2000)

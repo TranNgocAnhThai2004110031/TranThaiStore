@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link rel="stylesheet" href="https://kit.fontawesome.com/dd7e8a6c0f.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="icon" href="/images/logo-header.png">
+    <title>PhoneZ</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <div th:include="./headerAdmin :: div"></div>
+    <!-- Header -->
+    <div class="container product_container">
+        <div class="categories_page_container-input">
+            <form class="row no-gutters justify-content-center products_page_container-form" action="/admin/products/search"
+                method="get">
+
+                <input type="text" placeholder="Search" class="input_categories" name="keyword" th:value="${keyword}">
+
+                <button class="fas fa-search products_page_container-btn_s" name="query" type="submit"></button>
+
+            </form>
+
+        </div>
+
+        <a th:href="@{/admin/product/add}" style="margin: 20px 0"
+            class="btn btn-primary product_page-btn_add_Product"><span>Add Product</span> </a>
+        <table class="table product_page_table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">SN</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Preview</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Delete</th>
+                    <th scope="col">Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7" th:if="${products == null or #lists.isEmpty(products)}">
+                        <h3 style="text-align: center;">There are no product matching your search results!</h3>
+                    </td>
+                </tr>
+                <tr th:each="product, iStat : ${products}">
+                    <th class="product_page_item" scope="row" th:text="${iStat.index + 1}">1</th>
+                    <td  class="product_page_item"><a href="" th:href="@{/admin/viewproduct/{id}(id=${product.id})}" th:text="${product.name}"></a>
+                    <td  class="product_page_item" th:text="${product.category.name}">Larry</td>
+                    <td><img src="" height="100px" width="100px" th:src="@{${product.imageName}}"></td>
+                    <td  class="product_page_item" th:text="${product.quantity}">Larry</td>
+                    <td class="product_page_item"><a href="" th:href="@{/admin/product/delete/{id}(id=${product.id})}"
+                            class="btn btn-danger categories_page-btn_danger"><i class="fas fa-trash"></i></a></td>
+                    <td class="product_page_item"><a href="" th:href="@{/admin/product/{id}(id=${product.id})}"
+                            class="btn btn-warning categories_page-btn_warning"><i class="fas fa-edit"></i></a></td>
+
+                </tr>
+                <!-- Hiển thị phân trang -->
+                <!-- <tr>
+                    <td colspan="7">
+                        <div>
+                            <ul class="pagination">
+                                <li th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                    <a th:href="@{/admin/products(page=${i})}" th:text="${i}" class="product__page" th:classappend="${currentPage == i} ? 'active' : ''"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>             -->
+                <tr th:if="${products != null and !#lists.isEmpty(products)}">
+                    <td colspan="7">
+                        <div>
+                            <ul class="pagination">
+                                <li>
+                                    <a th:href="@{/admin/products(page=1)}"><i class="fas fa-angle-double-left"></i></a>
+                                </li>
+                                <li th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                    <a th:href="@{/admin/products(page=${i})}" class="product__page" th:classappend="${currentPage == i} ? 'active' : ''" th:text="${i}"></a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/admin/products(page=${totalPages})}"><i class="fas fa-angle-double-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                
+                
+                <!-- Kết thúc hiển thị phân trang -->
+
+            </tbody>
+        </table>
+    </div>
+
+
+    <script src="/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

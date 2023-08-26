@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tranthai.tranthaistore.converter.ProductConverter;
 import com.tranthai.tranthaistore.dto.ProductDTO;
 import com.tranthai.tranthaistore.model.Product;
+import com.tranthai.tranthaistore.service.BrandService;
 import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
 
@@ -30,10 +31,14 @@ public class ProductController {
     @Autowired 
     private ProductConverter productConverter;
 
+    @Autowired
+    private BrandService brandService;
+
     @GetMapping("/admin/product/add")
     public String getProduct(Model model) {
         model.addAttribute("productDTO", new ProductDTO());
         model.addAttribute("categories", this.categoryService.getAllCategory());
+        model.addAttribute("brands", this.brandService.getAllBrand());
         return "productAdd";
     }
 
@@ -48,7 +53,9 @@ public class ProductController {
     public String getProductById(@PathVariable Long id, Model model){
         ProductDTO productDTO = this.productConverter.toDTO(this.productService.getProductById(id).get());
         model.addAttribute("productDTO", productDTO);
-        model.addAttribute("categories", this.categoryService.getAllCategory());
+        model.addAttribute("categories", this.categoryService.getAllCategory());        
+        model.addAttribute("brands", this.brandService.getAllBrand());
+
         return "productAdd";
     }
 
