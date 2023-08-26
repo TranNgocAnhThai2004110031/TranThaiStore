@@ -25,7 +25,7 @@
     <div class="container categories_page_container">
         <div class="categories_page_container-input">
 
-            <form class="row no-gutters justify-content-center categories_page_container-form" action="/admin/categories/search" method="get">
+            <form class="row no-gutters justify-content-center categories_page_container-form" action="/admin/brands/search" method="get">
                 <input type="text" placeholder="Search" class="input_categories" name="keyword" th:value="${keyword}">
                 <button class="fas fa-search categories_page_container-btn_s" name="query" type="submit"></button>
             </form>
@@ -45,7 +45,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="4" th:if="${brands == null or #lists.isEmpty(brands)}">
+                    <td colspan="5" th:if="${brands == null or #lists.isEmpty(brands)}">
                         <h3 style="text-align: center;">There are no brand matching your search results!</h3>
                     </td>
                 </tr>
@@ -57,6 +57,23 @@
                             class="btn btn-danger categories_page-btn_danger"><i class="fas fa-trash"></i></a></td>
                     <td><a href="" th:href="@{/admin/brand/{id}(id=${brand.id})}"d:\git\PhoneZ\src\main\resources\templates\brandAdd.html
                             class="btn btn-warning categories_page-btn_warning"><i class="fas fa-edit"></i></a></td>
+                </tr>
+                <tr th:if="${brands != null and !#lists.isEmpty(brands)}">
+                    <td colspan="5">
+                        <div>
+                            <ul class="pagination">
+                                <li>
+                                    <a th:href="@{/admin/brands(page=1)}"><i class="fas fa-angle-double-left"></i></a>
+                                </li>
+                                <li th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                    <a th:href="@{/admin/brands(page=${i})}" class="product__page" th:classappend="${currentPage == i} ? 'active' : ''" th:text="${i}"></a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/admin/brands(page=${totalPages})}"><i class="fas fa-angle-double-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

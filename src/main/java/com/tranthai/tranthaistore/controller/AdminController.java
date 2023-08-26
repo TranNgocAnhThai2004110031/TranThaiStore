@@ -75,15 +75,14 @@ public class AdminController {
     //     return "products";
     // }
     @GetMapping("/products")
-    public String getProducts(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                            @RequestParam(value = "keyword", required = false) String keyword,
-                            Model model) {
+    public String getProducts(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
         if (page <= 0) {
             page = 1;
         }
         
-        List<Product> products = (List<Product>) model.getAttribute("products");
-        if (products == null || keyword != null) {
+        // List<Product> products = (List<Product>) model.getAttribute("products");
+        String keyword = (String) model.getAttribute("keyword");
+        // if (products == null || keyword != null) {
             Pageable pageable = PageRequest.of(page - 1, 10);
             Page<Product> productPage;
 
@@ -96,7 +95,7 @@ public class AdminController {
             model.addAttribute("products", productPage.getContent());
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", productPage.getTotalPages());
-        }
+        // }
         
         return "products";
     }
@@ -125,12 +124,23 @@ public class AdminController {
     }
 
     @GetMapping("/brands")
-    public String getBrand(Model model){
-        List<Brand> brands = (List<Brand>) model.getAttribute("brand");
-        if (brands == null) {
-            brands = this.brandService.getAllBrand();
-            model.addAttribute("brands", brands);
+    public String getBrand(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model){
+        if (page <= 0) {
+            page = 1;
         }
+        String keyword = (String) model.getAttribute("keyword");
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page<Brand> brandPage;
+
+        if (keyword != null) {
+            brandPage = this.brandService.searchBrandPage(keyword, pageable);
+        } else {
+            brandPage = this.brandService.getAllBrandPage(pageable);
+        }
+
+        model.addAttribute("brands", brandPage.getContent());
+        model.addAttribute("totalPages", brandPage.getTotalPages());
+        model.addAttribute("currentPage", page);
         return "brands";
     }
     

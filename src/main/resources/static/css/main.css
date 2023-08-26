@@ -1070,6 +1070,7 @@ main .card {
   width: 40%;
   font-size: 14px;
   border-radius: 21px;
+  width: 2em;
 }
 
 .categories_page-btn_warning {
@@ -1081,6 +1082,7 @@ main .card {
   width: 40%;
   font-size: 14px;
   border-radius: 21px;
+  width: 2em;
 }
 
 .categories_Page_Btn_add_category {
@@ -1331,6 +1333,10 @@ main .card {
 
 .product_page_item {
   padding-top: 3% !important;
+}
+
+.product_page_item--name{
+  width: 25em;
 }
 
 .product_container {

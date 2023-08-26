@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.tranthai.tranthaistore.model.Brand;
 import com.tranthai.tranthaistore.repository.BrandRepository;
@@ -37,6 +39,16 @@ public class BrandServiceImpl implements BrandService{
     @Override
     public List<Brand> searchBrand(String keyword) {
         return this.brandRepository.findByNameContainingIgnoreCase(keyword);
+    }
+
+    @Override
+    public Page<Brand> searchBrandPage(String keyword, Pageable pageable) {
+        return this.brandRepository.searchBrands(keyword, pageable);
+    }
+
+    @Override
+    public Page<Brand> getAllBrandPage(Pageable pageable) {
+        return this.brandRepository.findAll(pageable);
     }
     
 }

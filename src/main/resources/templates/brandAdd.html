@@ -78,8 +78,8 @@
                     <p>Brand Image</p>
                     <div class="form-group form-group_Product_Add">
                         <div>
-                            <input type="text" class="form-control" required th:field="*{imageName}" name="brandImage"
-                                id="brandImage" placeholder="Enter url" oninput="displayImage()" />
+                            <input type="text" class="form-control" required th:field="*{imageName}" name="imageName"
+                                id="imageName" placeholder="Enter url" oninput="displayImage()" />
                         </div>
                         <div id="imageDisplay"></div>
                     </div>
@@ -103,8 +103,8 @@
         crossorigin="anonymous"></script>
     <script>
         function displayImage() {
-            var url = document.getElementById("brandImage").value;
-            document.getElementById("imageDisplay").innerHTML = "<img src='" + url + " height='200px' width='200px' th:src='@{${brand.imageName}}' style='margin-top: 20px ;' alt=' ' />";
+            var url = document.getElementById("imageName").value;
+            document.getElementById("imageDisplay").innerHTML = "<img src='" + url + " height='200px' width='200px' th:src='@{${brand.imageName}}' style='margin-top: 20px ;' alt='' />";
         };
     </script>
 </body>

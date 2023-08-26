@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tranthai.tranthaistore.converter.BrandConverter;
 import com.tranthai.tranthaistore.dto.BrandDTO;
@@ -46,6 +48,13 @@ public class BrandController {
     @GetMapping("/admin/brand/delete/{id}")
     public String deleteBrand(@PathVariable("id") Long id){
         this.brandService.removeBrandById(id);
+        return "redirect:/admin/brands";
+    }
+
+    @GetMapping("/admin/brands/search")
+    public String searchBrand(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("keyword", keyword);
+        redirectAttributes.addFlashAttribute("brands", this.brandService.searchBrand(keyword));
         return "redirect:/admin/brands";
     }
 }

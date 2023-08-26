@@ -74,7 +74,7 @@ public class ProductController {
     @GetMapping("/admin/products/search")
     public String searchProduct(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes){
         // redirectAttributes.addFlashAttribute("products", this.productService.searchProduct(keyword));
-        redirectAttributes.addAttribute("keyword", keyword);
+        redirectAttributes.addFlashAttribute("keyword", keyword);
         return "redirect:/admin/products";
     }
     
