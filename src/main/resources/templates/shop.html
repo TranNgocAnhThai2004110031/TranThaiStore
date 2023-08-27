@@ -252,15 +252,13 @@
                                 <form th:action="@{/cart(productId=${product.id})}" method="post">
                                     <a href="" th:href="@{/shop/viewproduct/{id}(id=${product.id})}"
                                         class="shop-item__link">
-                                        <h5 class="card-title shop-item-tile" th:text="${product.name}">Iphone 14 pro
-                                            max
+                                        <h5 class="card-title shop-item-tile" th:text="${product.name}">
                                     </a>
                                     </h5>
                                     <h4 class="shop-item-price"> <span
-                                            th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + ' VNĐ'">
-                                            24.990.000 VNĐ</span>
+                                            th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + ' USD'"></span>
                                     </h4>
-                                    <p class="shop-item-content" th:text="${product.description}">description</p>
+                                    <p class="shop-item-content" th:text="${product.description}"></p>
                                     <div class="shop-item-btn__cover">
                                         <input class="shop-item-input" type="number" required name="quantity"
                                             id="quantity" min="1" value="1" th:attr="max=${product.quantity}"
@@ -313,8 +311,8 @@
                                 <h1 class="item_detail-name" th:text="${product.name}"></h1>
                                 <p class="item_detail-para" th:text="${product.descriptioin}"></p>
                                 <h4 class="shop-item-price"> <span
-                                    th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + ' VNĐ'">
-                                    24.990.000 VNĐ</span>
+                                    th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + ' USD'">
+                                    24.990.000 USD</span>
                             </h4>
                                 <div class="item_detail-quantity-wrapper">
                                     <span class="item_detail-input-label">Quantity</span>

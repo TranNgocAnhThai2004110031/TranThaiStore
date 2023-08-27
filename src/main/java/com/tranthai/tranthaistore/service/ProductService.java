@@ -16,6 +16,7 @@ public interface ProductService {
     void removeProductById(Long id);
     Optional<Product> getProductById(long id);
     List<Product> getAllProductByCategory(long id);
+    List<Product> getAllProductByBrand(Long id);
     List<Product> searchProduct(String keyword);
     Page<Product> searchProductPage(@Param("keyword") String keyword, Pageable pageable);
     Page<Product> getAllProductByCategoryPage(Long id, Pageable pageable);

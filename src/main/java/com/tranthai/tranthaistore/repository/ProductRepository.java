@@ -14,6 +14,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCategory_Id(long id);
 
+    List<Product> findAllByBrand_id(Long id);
+
     List<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
 
     @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE %:keyword%")

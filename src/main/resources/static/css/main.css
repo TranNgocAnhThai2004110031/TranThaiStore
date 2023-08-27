@@ -570,6 +570,19 @@ main .cart_page_body {
   margin-bottom: 20px;
 }
 
+.cart_page__name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* Số dòng muốn hiển thị */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  max-width: 16em;
+  line-height: 1.2em;
+  text-align: justify;
+}
+
 main .card {
   color: rgb(24, 21, 21);
   position: relative;
@@ -1335,7 +1348,7 @@ main .card {
   padding-top: 3% !important;
 }
 
-.product_page_item--name{
+.product_page_item--name {
   width: 25em;
 }
 
@@ -1480,7 +1493,7 @@ main .card {
   font-size: 15px !important;
 }
 
-.product__page{
+.product__page {
   display: block;
   width: auto;
   padding: 10px 15px;
@@ -1493,16 +1506,16 @@ main .card {
   border-radius: 100%;
 }
 
-.product__page.active{
+.product__page.active {
   background-color: #094ba1;
   border: 0;
 }
 
-.product__page.product__page{
+.product__page.product__page {
   margin-left: 5px;
 }
 
-.fa-angle-double-right:before{
+.fa-angle-double-right:before {
   margin-left: 5px;
 }
 
@@ -1552,7 +1565,7 @@ main .card {
   min-height: 40em;
 }
 
-.form-group_Product_Add--btn{
+.form-group_Product_Add--btn {
   display: flex;
   justify-content: center;
   height: 40em;
@@ -1917,4 +1930,15 @@ main .card {
 
 .bills_page_item {
   padding-top: 2% !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bills_page_item__information {
+  max-width: 15em;
+}
+
+.bills_page_item__product-name {
+  max-width: 25em;
 }

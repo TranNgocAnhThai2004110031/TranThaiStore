@@ -36,4 +36,19 @@ public class Product {
     private String imageName;
     // @Column(name = "active")
     // private Boolean active;
+
+    public Product() {
+    }
+    
+    public Product(Product other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.category = other.category;
+        this.brand = other.brand;
+        this.price = other.price;
+        this.description = other.description;
+        this.quantity = other.quantity;
+        this.imageName = other.imageName;
+    }
+    
 }

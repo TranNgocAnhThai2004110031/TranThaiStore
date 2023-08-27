@@ -59,8 +59,8 @@
                     <th class="product_page_item" scope="row" th:text="${iStat.index + 1}">1</th>
                     <td  class="product_page_item product_page_item--name"><a href="" th:href="@{/admin/viewproduct/{id}(id=${product.id})}" th:text="${product.name}"></a>
                     <td  class="product_page_item" th:text="${product.category.name}">Larry</td>
-                    <td><img src="" height="100px" width="100px" th:src="@{${product.imageName}}"></td>
                     <td><img src="" height="100px" width="100px" th:src="@{${product.brand.imageName}}"></td>
+                    <td><img src="" height="100px" width="100px" th:src="@{${product.imageName}}"></td>
                     <td  class="product_page_item" th:text="${product.quantity}">Larry</td>
                     <td class="product_page_item"><a href="" th:href="@{/admin/product/delete/{id}(id=${product.id})}"
                             class="btn btn-danger categories_page-btn_danger"><i class="fas fa-trash"></i></a></td>

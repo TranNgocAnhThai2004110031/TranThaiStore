@@ -1,7 +1,9 @@
 package com.tranthai.tranthaistore.converter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -67,14 +69,28 @@ public class BillConverter {
             }
         }
 
-        List<Double> prices = new ArrayList<>();
+        // List<Double> prices = new ArrayList<>();
+        // for (Product product : productCurrent) {
+        //     for (int i = 0; i < products.size(); i++) {
+        //         if (product.getName().equals(products.get(i))) {
+        //             prices.add(product.getPrice() * quantities.get(i));
+        //         }
+        //     }
+        // }
+        Map<String, Double> productPriceMap = new HashMap<>();
         for (Product product : productCurrent) {
-            for (int i = 0; i < products.size(); i++) {
-                if (product.getName().equals(products.get(i))) {
-                    prices.add(product.getPrice() * quantities.get(i));
-                }
+            productPriceMap.put(product.getName(), product.getPrice());
+        }
+
+        List<Double> prices = new ArrayList<>();
+        for (String product : products) {
+            Double productPrice = productPriceMap.get(product);
+            if (productPrice != null) {
+                int quantity = quantities.get(products.indexOf(product));
+                prices.add(productPrice * quantity);
             }
         }
+
         
         model.addAttribute("billDTO", billDTO);
         model.addAttribute("products", products);

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tranthai.tranthaistore.model.Bill;
@@ -45,6 +47,16 @@ public class BillServiceImpl implements BillService{
     @Override
     public List<Bill> getBillByUserId(Long id) {
         return this.billRepository.findByUser_id(id);
+    }
+
+    @Override
+    public Page<Bill> getAllBillPage(Pageable pageable) {
+        return this.billRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Bill> searchBillPgae(String keyword, Pageable pageable) {
+        return this.billRepository.searchBills(keyword, pageable);
     }
      
 }

@@ -12,12 +12,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="icon" href="/images/logo-header.png">
     <title>PhoneZ</title>
+    <link rel="stylesheet" href="/css/bill.css">
 </head>
 
 <body>
     <div class="container">
         <div class="row">
-            <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            <div class="well col-xs-10 col-sm-10 col-md-12 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 text-right">
                         <p>
@@ -62,7 +63,7 @@
                                 <td>Product information:</td>
                             </tr>
                             <tr>
-                                <td>Product's name</td>
+                                <td class="bill__table__item--product-name">Product's name</td>
                                 <td>The number of products</td>
                                 <td>Product price</td>
                             </tr>
@@ -75,7 +76,7 @@
                     </div> -->
 
                             <tr th:each="entry, iStat : ${productList}">
-                                <td th:text="${entry.name}"></td>
+                                <td class="bill__table__item--product-name" th:text="${entry.name}"></td>
                                 <td th:text="${entry.quantity}"></td>
                                 <td th:text="${#numbers.formatDecimal(entry.price, 0, 'COMMA', 2, 'POINT')}"></td>
                             </tr>
@@ -84,7 +85,7 @@
                                 <td></td>
                                 <td>
                                     <strong><span
-                                            th:text="${#numbers.formatDecimal(bill.price, 0, 'COMMA', 2, 'POINT')+' '}">VND</span></strong>
+                                            th:text="${#numbers.formatDecimal(bill.price, 0, 'COMMA', 2, 'POINT')+' '}">USD</span></strong>
                                 </td>
                             </tr>
 

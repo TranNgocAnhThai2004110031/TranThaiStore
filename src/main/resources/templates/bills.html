@@ -38,18 +38,18 @@
                     <th scope="col">Adress</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
-                    <th scope="col">Information</th>
                     <th scope="col">Product's name</th>
                     <th scope="col">Price</th>
+                    <th scope="col">Information</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="7" th:if="${bills == null or #lists.isEmpty(bills)}">
+                    <td colspan="8" th:if="${bills == null or #lists.isEmpty(bills)}" class="bills_page">
                         <h3 style="text-align: center;">There are no bill matching your search results!</h3>
                     </td>
                 </tr>
-                <tr th:each="bill, iStat : ${bills}">
+                <tr th:each="bill, iStat : ${bills}" class="bills_page">
                     <th class="bills_page_item" scope="row" th:text="${iStat.index + 1}">1</th>
                     <td class="bills_page_item">
                         <a class="nav-link" th:href="@{/admin/viewbill/{id}(id=${bill.id})}" href="#">
@@ -59,14 +59,31 @@
                     <td class="bills_page_item" th:text="${bill.address} + ', ' + ${bill.townCity}">Larry</td>
                     <td class="bills_page_item" th:text="${bill.email}">Larry</td>
                     <td class="bills_page_item" th:text="${bill.phoneNumber}">Larry</td>
-                    <td class="bills_page_item" th:text="${bill.addInformation}">Larry</td>
-                    <td class="bills_page_item">
-                        <a class="nav-link" th:href="@{/admin/bills/viewbill/{id}(id=${bill.id})}" href="#">
+                    <td class="bills_page_item bills_page_item__product-name">
+                        <a class="nav-link" th:href="@{/admin/viewbill/{id}(id=${bill.id})}" href="#">
                             <span th:each="product : ${bill.productName}" th:text="${product} + '; '"></span>
                         </a>
                     </td>
                     <td class="bills_page_item"
-                        th:text="${#numbers.formatDecimal(bill.price, 0, 'COMMA', 2, 'POINT')} + ' VNĐ'">Larry</td>
+                    th:text="${#numbers.formatDecimal(bill.price, 0, 'COMMA', 2, 'POINT')} + ' USD'">Larry</td>
+                    <td class="bills_page_item bills_page_item__information" th:text="${bill.addInformation}">Larry</td>
+                </tr>
+                <tr th:if="${bills != null and !#lists.isEmpty(bills)}" class="bills_page">
+                    <td colspan="8">
+                        <div>
+                            <ul class="pagination">
+                                <li>
+                                    <a th:href="@{/admin/bills(page=1)}"><i class="fas fa-angle-double-left"></i></a>
+                                </li>
+                                <li th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                    <a th:href="@{/admin/bills(page=${i})}" class="product__page" th:classappend="${currentPage == i} ? 'active' : ''" th:text="${i}"></a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/admin/bills(page=${totalPages})}"><i class="fas fa-angle-double-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -113,13 +113,27 @@ public class AdminController {
     }
 
     @GetMapping("/bills")
-    public String getBills(Model model){
+    public String getBills(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,Model model){
         // model.addAttribute("bills", this.billService.getAllBill());
-        List<Bill> bills = (List<Bill>) model.getAttribute("bills");
-        if (bills == null) {
-            bills = this.billService.getAllBill();
-            model.addAttribute("bills", bills);
+        // List<Bill> bills = (List<Bill>) model.getAttribute("bills");
+        // if (bills == null) {
+        //     bills = this.billService.getAllBill();
+        //     model.addAttribute("bills", bills);
+        // }
+        if (page <= 0) {
+            page = 1;
         }
+        String keyword = (String) model.getAttribute("keyword");
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page<Bill> billPages;
+        if (keyword != null) {
+            billPages = this.billService.searchBillPgae(keyword, pageable);
+        } else {
+            billPages = this.billService.getAllBillPage(pageable);
+        }
+        model.addAttribute("bills", billPages.getContent());
+        model.addAttribute("totalPages", billPages.getTotalPages());
+        model.addAttribute("currentPage", page);
         return "bills";
     }
 

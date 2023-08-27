@@ -213,7 +213,7 @@
                                 <span th:each="product : ${bill.productName}" th:text="${product} + '; '"></span>
                             </a>
                         </td>
-                        <td th:text="${#numbers.formatDecimal(bill.price, 0, 'COMMA', 2, 'POINT')} + ' VNĐ'">Larry</td>
+                        <td th:text="${#numbers.formatDecimal(bill.price, 0, 'COMMA', 2, 'POINT')} + ' USD'">Larry</td>
 
                     </tr>
                 </tbody>

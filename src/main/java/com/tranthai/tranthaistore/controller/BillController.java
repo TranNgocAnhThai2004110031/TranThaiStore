@@ -55,6 +55,7 @@ public class BillController {
     public String searchBill(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes){
         List<Bill> bills = this.billService.searchBill(keyword);
         redirectAttributes.addFlashAttribute("bills", bills);
+        redirectAttributes.addFlashAttribute("keyword", keyword);
         return "redirect:/admin/bills";
     }
 
@@ -98,8 +99,8 @@ public class BillController {
         List<String> productName = billDTO.getProductName();
         this.billConverter.processProductInfo(productName, products, model, id);
 
-        model.addAttribute("bill", billDTO);
-        model.addAttribute("products", products);
+        // model.addAttribute("bill", billDTO);
+        // model.addAttribute("products", products);
 
         return "viewBill";
     }
@@ -130,16 +131,33 @@ public class BillController {
         if (cart == null || cart.isEmpty()) {
             return "redirect:/cart";
         }
+        // List<String> productName = new ArrayList<>();
+        // List<Product> products = new ArrayList<Product>();
+        // for(Map.Entry<Long, Integer> entry : cart.entrySet()){
+        //     Product product = this.productService.getProductById(entry.getKey()).get();
+        //     productName.add(product.getName() + " x " + entry.getValue());
+        //     product.setQuantity(product.getQuantity() - entry.getValue());
+        //     this.productService.addProduct(product);
+        //     product.setQuantity(entry.getValue());
+        //     products.add(product);
+        // }
         List<String> productName = new ArrayList<>();
         List<Product> products = new ArrayList<Product>();
-        for(Map.Entry<Long, Integer> entry : cart.entrySet()){
-            Product product = this.productService.getProductById(entry.getKey()).get();
-            productName.add(product.getName() + " x " + entry.getValue());
-            product.setQuantity(product.getQuantity() - entry.getValue());
-            this.productService.addProduct(product);
-            product.setQuantity(entry.getValue());
-            products.add(product);
+        for (Map.Entry<Long, Integer> entry : cart.entrySet()) {
+            Product originalProduct = this.productService.getProductById(entry.getKey()).orElse(null);
+            
+            if (originalProduct != null) {
+                Product productCopy = new Product(originalProduct); // Tạo bản sao
+                
+                productName.add(productCopy.getName() + " x " + entry.getValue());
+                
+                productCopy.setQuantity(originalProduct.getQuantity() - entry.getValue());
+                this.productService.addProduct(productCopy); // Lưu trạng thái thay đổi
+                productCopy.setQuantity(entry.getValue());
+                products.add(productCopy); // Thêm vào danh sách
+            }
         }
+
 
         double total = (double) session.getAttribute("total");
 
