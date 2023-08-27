@@ -18,8 +18,6 @@
                         <a class="navbar-navigation__link" sec:authorize="isAuthenticated()">
                             <li class="navbar-navigation__item">
                                 <i class="fa-solid fa-user navbar-navigation__icon"></i>
-                                <!-- <span class="navbar-navigation__content"
-                                            th:text="${#session.getAttribute('email')}">email@gmail.com</span> -->
                                 <span class="navbar-navigation__content"
                                             th:text="${email}">email@gmail.com</span>
                             </li>
@@ -72,17 +70,17 @@
                 <div class="col-8">
                     <div class="header-title">
                         <ul class="header-title__list">
-                            <a class="header-title__link" th:href="@{/}">
-                                <li class="header-tile__item header-title__link--color">Home
+                            <a class="header-title__link" th:href="@{/}" th:classappend="${#request.getRequestURI() == '/' ? 'header-title__link--color' : ''}">
+                                <li class="header-tile__item">Home
                                 </li>
                             </a>
-                            <a class="header-title__link" th:href="@{/shop}">
+                            <a class="header-title__link" th:href="@{/shop}" th:classappend="${#request.getRequestURI() == '/shop' ? 'header-title__link--color' : ''}">
                                 <li class="header-tile__item">Products</li>
                             </a>
-                            <a href="#slider2" class="header-title__link">
+                            <a href="/#slider2" class="header-title__link" th:classappend="${currentPage == '/slider2' ? 'header-title__link--color' : ''}">
                                 <li class="header-tile__item">Newest</li>
                             </a>
-                            <a href="#aboutus" class="header-title__link">
+                            <a href="#aboutus" class="header-title__link" th:classappend="${#request.getRequestURI() == '#aboutus' ? 'header-title__link--color' : ''}">
                                 <li class="header-tile__item">About Us</li>
                             </a>
                         </ul>
@@ -119,15 +117,15 @@
                 <i class="navbar-mobile__exit-icon fa-solid fa-x"></i>
             </label>
             <ul class="navbar-mobile__list">
-                <a th:href="@{/}" class="navbar-mobile__link">
-                    <li class="navbar-mobile__item header-title__link--color">
+                <a th:href="@{/}" class="navbar-mobile__link" th:classappend="${#request.getRequestURI() == '/' ? 'header-title__link--color' : ''}">
+                    <li class="navbar-mobile__item">
                         <span class="navbar-mobile__content">
                             Home
                         </span>
                         <i class="navbar-mobile__icon fa-solid fa-house"></i>
                     </li>
                 </a>
-                <a th:href="@{/shop}" class="navbar-mobile__link">
+                <a th:href="@{/shop}" class="navbar-mobile__link" th:classappend="${#request.getRequestURI() == '/shop' ? 'header-title__link--color' : ''}">
                     <li class="navbar-mobile__item">
                         <span class="navbar-mobile__content">
                             Products
@@ -135,7 +133,7 @@
                         <i class="navbar-mobile__icon fa-solid fa-shop"></i>
                     </li>
                 </a>
-                <a href="#slider2" class="navbar-mobile__link">
+                <a href="/#slider2" class="navbar-mobile__link" th:classappend="${#request.getRequestURI() == '/#slider2' ? 'header-title__link--color' : ''}">
                     <li class="navbar-mobile__item">
                         <span class="navbar-mobile__content">
                             Newest
@@ -143,7 +141,7 @@
                         <i class="navbar-mobile__icon fa-solid fa-mobile"></i>
                     </li>
                 </a>
-                <a href="#aboutus" class="navbar-mobile__link">
+                <a href="#aboutus" class="navbar-mobile__link" th:classappend="${#request.getRequestURI() == '#aboutus' ? 'header-title__link--color' : ''}">
                     <li class="navbar-mobile__item">
                         <span class="navbar-mobile__content">
                             About Us
@@ -174,7 +172,7 @@
                         </i>
                     </li>
                 </a>
-                <!-- <span class="navbar-navigation__number" th:text="${#session.getAttribute('cartCount')}">0</span> -->
+                <span class="navbar-navigation__number" th:text="${#session.getAttribute('cartCount')}">0</span>
             </ul>
         </div>
     </nav>

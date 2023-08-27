@@ -802,6 +802,10 @@ main .card {
   box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px;
 }
 
+.view_Product-Page_container__img{
+  border-radius: 2em;
+}
+
 .view_Product-btn_add_to_Cart {
   border-radius: 20px;
   position: relative;
@@ -820,20 +824,36 @@ main .card {
 }
 
 .view_Page_Info {
-  font-size: 14px;
-  font-weight: 100;
-  line-height: 20px;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 30px;
   letter-spacing: 0.5px;
   margin: 20px 0 30px;
 }
 
-.view_Page_Info h5 {
-
-  font-weight: 700;
+.view_Page_Info h1 {
+  font-weight: bold;
 }
 
-.view_Page_Info h3 {
-  text-align: right;
+.view_Page_Info h3, h5{
+  font-size: 20px;
+  /* text-align: right; */
+}
+
+.view_Page_Info p, label{
+  text-align: justify;
+}
+.view_Page_Info p{
+  padding: 0 1em 1em 0;
+}
+
+.view_Page_Info label{
+  font-weight: 400;
+}
+
+.view_Page_Info input{
+  font-weight: 700;
+  font-size: 20px;
 }
 
 .view_Product-btn_add_to_Cart {

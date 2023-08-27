@@ -19,6 +19,10 @@
         display: flex;
     }
 
+    .header-title__link--color{
+        color: #01b9fb;
+    }
+
     .background-slider__item {
         height: 40vh;
     }

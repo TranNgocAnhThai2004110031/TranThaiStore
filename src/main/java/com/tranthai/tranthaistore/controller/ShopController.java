@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tranthai.tranthaistore.model.Cart;
 import com.tranthai.tranthaistore.model.Product;
 import com.tranthai.tranthaistore.model.User;
+import com.tranthai.tranthaistore.service.BrandService;
 import com.tranthai.tranthaistore.service.CartService;
 import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
@@ -47,6 +48,9 @@ public class ShopController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private BrandService brandService;
 
     @Autowired
     private CartUtil cartUtil;
@@ -104,6 +108,7 @@ public class ShopController {
     public String home(Model model, HttpSession session) {
         model.addAttribute("products", this.productService.getAllProduct());
         model.addAttribute("categories", this.categoryService.getAllCategory());
+        model.addAttribute("brands", this.brandService.getAllBrand());
         // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
         // if (cart == null) {
@@ -146,6 +151,7 @@ public class ShopController {
         
         model.addAttribute("currentPage", page);
         model.addAttribute("categories", this.categoryService.getAllCategory());
+        model.addAttribute("brands", this.brandService.getAllBrand());
         // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
         this.cartUtil.handleCartUpdate(session, cart);

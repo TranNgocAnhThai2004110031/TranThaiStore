@@ -1,13 +1,18 @@
 <footer class="container-fluid footer" id="aboutus">
     <div class="row">
         <div class="col-lg-3 footer-cover">
-            <h4 class="footer-heading">Company criteria</h4>
-            <div class="footer_content-cover">
-                <p class="footer_para">Contrary to popular belief, Lorem Ipsum is not simply random text. It has
+            <h4 class="footer-heading">Brand</h4>
+            <div class="footer_content-cover footer_content-cover__brand">
+                <!-- <p class="footer_para">Contrary to popular belief, Lorem Ipsum is not simply random text. It has
                     roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
                     Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one
                     of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through
-                    the cites of the word in classical literature, discovered the undoubtable source.</p>
+                    the cites of the word in classical literature, discovered the undoubtable source.</p> -->
+                <ul class="footer-list footer-list__brand">
+                    <li class="footer-item footer-item__brand" th:each="brand: ${brands}">
+                        <a th:href="@{/shop/brand/{id}(id=${brand.id})}" th:text="${brand.name}"></a>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="col-lg-2 footer-cover">

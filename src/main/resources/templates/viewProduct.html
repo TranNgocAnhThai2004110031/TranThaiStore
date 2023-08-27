@@ -27,7 +27,7 @@
 </head>
 
 <body>
-    <div class="container-fluid header-cover" id="header-cover">
+    <!-- <div class="container-fluid header-cover" id="header-cover">
         <nav class="navbar">
             <div class="container-sm header-width__custome">
                 <div class="col-4 navbar-cover__logo">
@@ -198,20 +198,21 @@
                 </ul>
             </div>
         </nav>
-    </div>
-
+    </div> -->
+    <div class="container-fluid header-cover" id="header-cover" th:include="./header :: div"></div>
 
     <div class="spacer" style="padding-top: 160px;"></div>
 
     <div class="container">
         <div class="row  view_Product-Page_container">
             <div class="col-sm-5 d-flex justify-content-center">
-                <img class="mt-5" height="300px" width="300px" src="" th:src="@{${product.imageName}}" alt="">
+                <img class="mt-5 view_Product-Page_container__img" height="300px" width="300px" src="" th:src="@{${product.imageName}}" alt="">
             </div>
             <div class="col-sm-7 mt-5 view_Page_Info">
-                <h2 th:text="${product.name}"></h2>
-                <p th:text="${product.category.name}"></p>
-                <h2> <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}"></span> USD</h2>
+                <h1 th:text="${product.name}"></h1>
+                <h5>Category: <span th:text="${product.category.name}"></span></h5>
+                <h5>Brand: <span th:text="${product.brand.name}"></span></h5>
+                <h3>Price: <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}"></span> USD</h3>
 
                 <p th:text="${product.description}"></p>
                 <form th:action="@{/cart/(productId=${product.id})}" method="post">
@@ -222,6 +223,7 @@
                         <i class="fa-solid fa-cart-shopping icon_cart"></i>
                     </button>
                 </form>
+
             </div>
         </div>
     </div>

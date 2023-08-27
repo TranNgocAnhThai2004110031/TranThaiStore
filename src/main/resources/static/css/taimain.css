@@ -441,6 +441,7 @@ body {
 
 .footer-cover {
     padding: 10px;
+    text-align: center;
 }
 
 .footer-cover:last-child {
@@ -459,11 +460,28 @@ body {
 .footer_content-cover {
     border-right: 2px solid #0aa7de;
     padding-right: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.footer_content-cover__brand{
+    display: block;  
+    margin-left: 4em;
 }
 
 .footer-list {
     list-style-type: none;
     position: relative;
+}
+
+.footer-list__brand{
+    display: flex;
+    max-height: 18em;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-width: 4em;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .footer-item {
@@ -477,6 +495,11 @@ body {
 
 .footer-item a{
     color: var(--white-color);
+}
+
+.footer-item__brand{
+    margin: 0 20px;
+    display: flex;
 }
 
 /* page products ----------------------------------------------------------------------------------*/
