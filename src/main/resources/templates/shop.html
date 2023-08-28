@@ -209,39 +209,52 @@
     
     <div class="container shop-cover" style="margin-top: 30px">
         <div class="row">
-            <div class="col-sm-3">
-                <div class="shop-categori-cover" id="shop__categori">
+            <div class="col-sm-3 shop__group__left">
+                <div class="shop__category" id="shop__categori">
                     <h4 class="shop-categori__heading">Categories</h4>
                     <ul class="list-group">
-                        <a th:href="@{/shop}">
+                        <!-- <a th:href="@{/shop}">
                             <li class="list-group-item shop-list__heading">All Products</li>
-                        </a>
+                        </a> -->
                         <a class="shop-item__link" th:each="category, iStat : ${categories}"
                             th:href="@{/shop/category/{id}(id=${category.id})}">
-                            <li class="list-group-item shop-item__heading" th:text="${category.name}">Samsung</li>
+                            <li class="list-group-item shop-item__heading" th:classappend="${titlePage == category.name ? 'active' : ''}" th:text="${category.name}"></li>
                         </a>
 
+                    </ul>
+                </div>
+                <div class="shop__brand">
+                    <h4 class="shop__brand--heading">Brands</h4>
+                    <ul class="list-group shop__brand__group">
+                        <a class="shop__brand--link" th:each="brand, iStat : ${brands}"
+                            th:href="@{/shop/brand/{id}(id=${brand.id})}">
+                            <li class="list-group-item shop__brand__item">
+                                <img th:src="${brand.imageName}" alt="brand.name" height="40px" width="40px">
+                            </li>
+                        </a>
                     </ul>
                 </div>
             </div>
             <div class="col-sm-9">
                 <div class="search justify-content-center shop-item__search">
-                    <form class="row no-gutters justify-content-left shop-search-cover" action="/shop/search"
+                    <!-- <form class="row no-gutters justify-content-left shop-search-cover" action="/shop/search"
                         method="get">
                         <input class="col-sm-9 d-flex justify-content-center shop-search-input" type="text"
                             name="keyword" th:value="${keyword}" placeholder="What would you like to search for ?">
                         <button class="col-sm-2 d-flex justify-content-center shop-search-btn" name="query"
                             type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </form>
+                    </form> -->
+                    <h1 class="shop__title-page" th:text="${titlePage != null ? titlePage : 'All products'}"></h1>
                 </div>
+                
                 <div class="card" style="margin-top: 8px; border: white; background: transparent;" th:if="${products == null or #lists.isEmpty(products)}">
                     <h3>There are no products matching your search results!</h3>
                 </div>
                 <div class="card" style="margin-top: 8px; border: white; background: transparent;"
                     th:each="product : ${products}">
-                    <div th:if="${products == null or #lists.isEmpty(products)}">
+                    <!-- <div th:if="${products == null or #lists.isEmpty(products)}">
                         <h3 style="text-align: center;">There are no product matching your search results!</h3>
-                    </div>
+                    </div> -->
                     <div class="row no-gutters shop-item-cover">
                         <div class="col-sm-3 d-flex justify-content-center">
                             <a th:href="@{/shop/viewproduct/{id}(id=${product.id})}" class="">
@@ -351,6 +364,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="/js/hiddenNavbar.js"></script>
+    <!-- <script src="/js/hiddenShop.js"></script> -->
     <!-- <script>
         function addToCart(productId){
             fetch(`/cart(productId=${productId})`).then(res => res.json()).then(data => {

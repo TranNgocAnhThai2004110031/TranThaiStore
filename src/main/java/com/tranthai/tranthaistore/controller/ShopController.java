@@ -135,7 +135,9 @@ public class ShopController {
         }
 
         List<Product> products = (List<Product>) model.getAttribute("products");
+        String titlePage = (String) model.getAttribute("titlePage");
         Long categoryId = (Long) model.getAttribute("categoryId");
+        Long brandId = (Long) model.getAttribute("brandId");
         Pageable pageable = PageRequest.of(page - 1, 10);
         Page<Product> productPage;
         
@@ -143,6 +145,8 @@ public class ShopController {
             productPage = this.productService.searchProductPage(keyword, pageable);
         } else if (categoryId != null && products != null) {
             productPage = this.productService.getAllProductByCategoryPage(categoryId, pageable);
+        } else if (brandId != null && products !=null) {
+            productPage = this.productService.getAllProductByBrandPage(brandId, pageable);
         } else {
             productPage = this.productService.getAllProductPage(pageable);
         }
@@ -152,6 +156,7 @@ public class ShopController {
         model.addAttribute("currentPage", page);
         model.addAttribute("categories", this.categoryService.getAllCategory());
         model.addAttribute("brands", this.brandService.getAllBrand());
+        model.addAttribute("titlePage", titlePage);
         // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
         this.cartUtil.handleCartUpdate(session, cart);
@@ -162,9 +167,22 @@ public class ShopController {
     public String shopByCategory(RedirectAttributes redirectAttributes, @PathVariable Long id, HttpSession session) {
         // model.addAttribute("categories", this.categoryService.getAllCategory());
         List<Product> products = this.productService.getAllProductByCategory(id);
+        String categoryName = this.categoryService.getCategoryById(id).get().getName();
         redirectAttributes.addFlashAttribute("products", products);
         redirectAttributes.addFlashAttribute("categoryId", id);
+        redirectAttributes.addFlashAttribute("titlePage", categoryName);
         
+        return "redirect:/shop";
+    }
+
+    @GetMapping("/shop/brand/{id}")
+    public String shopByBrand(RedirectAttributes redirectAttributes, @PathVariable Long id){
+        List<Product> products = this.productService.getAllProductByBrand(id);
+        String brandName = this.brandService.getBrandById(id).get().getName();
+        redirectAttributes.addFlashAttribute("products", products);
+        redirectAttributes.addFlashAttribute("brandId", id);
+        redirectAttributes.addFlashAttribute("titlePage", brandName);
+
         return "redirect:/shop";
     }
 
@@ -185,4 +203,5 @@ public class ShopController {
         return "viewProduct";
 
     }
+
 }

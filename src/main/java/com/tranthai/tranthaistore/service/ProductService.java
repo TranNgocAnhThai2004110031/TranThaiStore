@@ -20,5 +20,6 @@ public interface ProductService {
     List<Product> searchProduct(String keyword);
     Page<Product> searchProductPage(@Param("keyword") String keyword, Pageable pageable);
     Page<Product> getAllProductByCategoryPage(Long id, Pageable pageable);
+    Page<Product> getAllProductByBrandPage(Long id, Pageable pageable);
     
 }
