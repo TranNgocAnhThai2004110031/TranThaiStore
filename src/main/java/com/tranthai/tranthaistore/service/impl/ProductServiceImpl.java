@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Page<Product> getAllProductByBrandPage(Long id, Pageable pageable) {
-        return this.productRepository.findAllByBrand_Id(0, pageable);
+        return this.productRepository.findAllByBrand_Id(id, pageable);
     }
     
 }

@@ -138,7 +138,7 @@ public class ShopController {
         String titlePage = (String) model.getAttribute("titlePage");
         Long categoryId = (Long) model.getAttribute("categoryId");
         Long brandId = (Long) model.getAttribute("brandId");
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page - 1, 20);
         Page<Product> productPage;
         
         if (keyword != null && products != null) {
