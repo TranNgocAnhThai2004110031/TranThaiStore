@@ -41,13 +41,16 @@
                 <div class="shop__category" id="shop__categori">
                     <h4 class="shop-categori__heading">Categories</h4>
                     <ul class="list-group">
+                        <a class="shop-item__link" href="/shop">
+                            <li class="list-group-item shop-item__heading"
+                                th:classappend="${titlePage == null ? 'active' : ''}">All product</li>
+                        </a>
                         <a class="shop-item__link" th:each="category, iStat : ${categories}"
                             th:href="@{/shop/category/{id}(id=${category.id})}">
                             <li class="list-group-item shop-item__heading"
                                 th:classappend="${titlePage == category.name ? 'active' : ''}"
                                 th:text="${category.name}"></li>
                         </a>
-
                     </ul>
                 </div>
                 <div class="shop__brand">
