@@ -106,7 +106,7 @@ public class ShopController {
     // }
     @GetMapping({ "/", "/home" })
     public String home(Model model, HttpSession session) {
-        model.addAttribute("products", this.productService.getAllProduct());
+        model.addAttribute("products", this.productService.getAllProductSort());
         model.addAttribute("categories", this.categoryService.getAllCategory());
         model.addAttribute("brands", this.brandService.getAllBrand());
         // Lấy giỏ hàng từ session, nếu không có thì khởi tạo

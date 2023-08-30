@@ -10,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 import com.tranthai.tranthaistore.model.Product;
 
 public interface ProductService {
-    List<Product> getAllProduct();
+    List<Product> getAllProduct();    
+    List<Product> getAllProductSort();
     Page<Product> getAllProductPage(Pageable pageable);
     void addProduct(Product product);
     void removeProductById(Long id);

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tranthai.tranthaistore.model.Product;
@@ -13,13 +14,19 @@ import com.tranthai.tranthaistore.repository.ProductRepository;
 import com.tranthai.tranthaistore.service.ProductService;
 
 @Service
-public class ProductServiceImpl implements ProductService{
-
+public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
+
     @Override
     public List<Product> getAllProduct() {
         return this.productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getAllProductSort() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        return this.productRepository.findAll(sort);
     }
 
     @Override
@@ -39,7 +46,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<Product> getAllProductByCategory(long id) {
-        return this.productRepository.findAllByCategory_Id(id);   
+        return this.productRepository.findAllByCategory_Id(id);
     }
 
     @Override
@@ -71,5 +78,5 @@ public class ProductServiceImpl implements ProductService{
     public Page<Product> getAllProductByBrandPage(Long id, Pageable pageable) {
         return this.productRepository.findAllByBrand_Id(id, pageable);
     }
-    
+
 }
