@@ -271,7 +271,7 @@ body {
 .background-slider__item {
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100vh;
+    height: 50vh;
     width: 100%;
     background-position: center;
     background-attachment: fixed !important;
@@ -286,16 +286,77 @@ body {
     font-size: 9.2rem;
 }
 
+.category-home{
+    background-color: var(--white-color);
+    padding: 0 10%;
+    padding-bottom: 3.5em;
+}
+
+.category-home h1{
+    text-align: center;
+    font-size: 4em;
+    font-weight: 700;
+    margin: 35px 0 27px 0;
+}
+
+.category-home__group{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.category-home__group__item{
+    width: 30%;
+    height: 12em;
+    background-color: #0aa7de;
+    margin: 15px;
+    display: block;
+    list-style: none;
+    border-radius: 12px;
+    color: var(--text-color);
+    background-color: #f2f2f2;
+}
+
+.category-home__group__item li{
+    display: flex;
+    align-items: flex-end;
+    padding: 10%;
+    font-size: 1.6em;
+    position: relative;
+}
+
+.category-home__group__item img{
+    position: absolute;
+    left: 60%;
+    top: 7%;
+    /* background: transparent; */
+}
+
+.category-home__group__item p{
+    position: absolute;
+    top: 100%;
+    left: 15%;
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+
 /* Product slider -----------------------------------------------------------------------------------------------*/
+
+.product-slider{
+    width: 93%;
+    /* display: flex;
+    justify-content: center */
+}
 
 .product-slider__cover {
     position: relative;
 }
 
-.product-slider {
+/* .product-slider {
     margin: 0px 0px 34px 0px;
 
-}
+} */
 
 .product-slider__heading {
     display: flex;
@@ -303,20 +364,27 @@ body {
 }
 
 .product-slider__heading-content {
-    font-size: 5.8rem;
+    font-size: 4rem;
     font-weight: 700;
 }
 
 
 
 .product-slider__item {
-    background-image: linear-gradient(-45deg, #24273c, #1d2f65, #425fbc, #0a759c);
+    /* background-image: linear-gradient(-45deg, #24273c, #1d2f65, #425fbc, #0a759c); */
     box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
     border-radius: 14px !important;
     height: 100%;
+    width: 100%;
     margin: 0px 0px 45px 4px;
-    padding-bottom: 20px;
+    /* padding: 0; */
+    /* padding-bottom: 20px; */
+    background-color: var(--white-color);
 }
+
+/* .product-item{
+    padding: 5px;
+} */
 
 .product-slider__image {
     background-position: center;
@@ -326,27 +394,61 @@ body {
     margin-top: 8px;
 }
 
+.product-slider__image img{
+        border-radius: 14px 14px 0 0;
+}
+
 .product-slider__content {
     text-align: center;
     padding-top: 14px;
 }
 
 .product-slider__name {
-    font-size: 1.8rem;
-    color: var(--white-color);
+    font-size: 1.4rem;
+    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding: 0 5px;
 }
 
 .product-slider__price {
     font-size: 1.4rem;
     color: rgb(228, 164, 45);
     display: block;
+    padding-bottom: 10px;
 }
 
 .product-slider__link {}
 
+.brand-home{
+    padding: 0 10%;
+    background-color: var(--white-color);
+}
+
+.brand-home h1{
+    text-align: center;
+    font-size: 4em;
+    font-weight: 700;
+    margin: 35px 0 27px 0;
+}
+
+.brand-home__group{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    justify-content: center;
+    padding-bottom: 3.5em;
+}
+
+.brand-home__group__item{
+    width: 20em;
+    display: inline-flex;
+    justify-content: center;
+    margin: 20px;
+    /* background-color: #e1e1e1; */
+}
 
 /* Advertising */
 .advertising {}
@@ -462,6 +564,10 @@ body {
     padding-right: 8px;
     display: flex;
     justify-content: center;
+}
+
+.footer_content-cover a:hover{
+    color: #0aa7de;
 }
 
 .footer_content-cover__brand{
@@ -864,7 +970,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .shop-item-cover {

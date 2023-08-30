@@ -75,7 +75,7 @@
                     <h3>There are no products matching your search results!</h3>
                 </div>
                 <div class="product">
-                    <div class="card" style="margin-top: 8px; border: white; background: transparent;"
+                    <div class="card" style="margin-top: 8px; border: white; background: transparent; margin: 10px 3.2px;"
                         th:each="product : ${products}">
                         <div class="row no-gutters shop-item-cover">
                             <div class="d-flex justify-content-center shop-item-img">
@@ -95,7 +95,6 @@
                                         <h4 class="shop-item-price"> <span
                                                 th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + ' USD'"></span>
                                         </h4>
-                                        <!-- <p class="shop-item-content" th:text="${product.description}"></p> -->
                                         <div class="shop-item-btn__cover">
                                             <input class="shop-item-input" type="number" required name="quantity"
                                                 id="quantity" min="1" value="1" th:attr="max=${product.quantity}"

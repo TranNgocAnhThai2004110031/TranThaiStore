@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,14 +30,138 @@
     <link rel="stylesheet" href="/css/taibase.css">
     <link rel="stylesheet" href="/css/tairesponsive.css">
 </head>
+
 <body>
     <!-- Sử dụng th:replace trong thẻ body để thay thế phần nội dung -->
     <div th:include="./header :: div"></div>
     <!-- <header class="container-fluid header-cover" id="header-cover">
         <div th:include="./header :: div"></div>
     </header> -->
+    <div class="container-fluid background-slider">
+        <div class="row">
+            <div class="col-12 background-slider__column">
+                <div class="background-slider__list">
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider1.jpg);">
+                        <span class="background-slider__content">Quality</span>
+                    </div>
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider2.jpg);">
+                        <span class="background-slider__content">Reputation</span>
+                    </div>
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider3.jpg);">
+                        <span class="background-slider__content">Honest</span>
+                    </div>
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider1.jpg);">
+                        <span class="background-slider__content">Quality</span>
+                    </div>
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider2.jpg);">
+                        <span class="background-slider__content">Reputation</span>
+                    </div>
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider3.jpg);">
+                        <span class="background-slider__content">Honest</span>
+                    </div>
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider1.jpg);">
+                        <span class="background-slider__content">Quality</span>
+                    </div>
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider2.jpg);">
+                        <span class="background-slider__content">Reputation</span>
+                    </div>
+                    <div class="background-slider__item" style="background-image: url(/images/background-slider3.jpg);">
+                        <span class="background-slider__content">Honest</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid category-home">
+        <div class="row">
+            <div class="col-12">
+                <h1>Product portfolio</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ul class="category-home__group">
+                    <th:block th:each="category : ${categories}">
+                        <a class="category-home__group__item" th:href="@{/shop/category/{id}(id=${category.id})}">
+                            <li>
+                                <p class="categpry__item__content" th:text="${category.name}"></p>
 
-    <h1>Welcome to the Home Page</h1>
+                                <img th:if="${category.name == 'Bag' or category.name == 'Cosmetics'}"
+                                    th:src="${'/images/' + category.name + '.png'}" alt="${category.name}"
+                                    height="130px" width="130px" style="top: -15%;">
+                                <img th:unless="${category.name == 'Bag' or category.name == 'Cosmetics'}"
+                                    th:src="${'/images/' + category.name + '.png'}" alt="${category.name}"
+                                    height="110px" width="110px">
+                            </li>
+                        </a>
+                    </th:block>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid " id="slider2">
+        <div class="row">
+            <div class="col-12">
+                <div class="product-slider__heading">
+                    <h1 class="product-slider__heading-content">
+                        The Newest Products
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid product-slider">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row product-slider__cover">
+                        <div th:each="product : ${products}" class="col-lg-3 product-item">
+                            <div class="product-slider__item ">
+                                <a th:href="@{/shop}" class="product-slider__link">
+                                    <div class="product-slider__image" style="width: 100%; height: 300px;">
+                                        <a th:href="@{/shop/viewproduct/{id}(id=${product.id})}" class="">
+                                            <img class="" height="300px" width="100%" th:src="@{${product.imageName}}"
+                                                th:alt="${product.name}" src="/images/product-item.png">
+                                        </a>
+                                    </div>
+                                    <div class="product-slider__content">
+                                        <h4 class="product-slider__name" th:text="${product.name}">
+                                        </h4>
+                                        <span class="product-slider__price"
+                                            th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')} + ' USD'">
+                                            <span class="product-slider__currence">USD</span></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid brand-home">
+        <div class="row">
+            <div class="col-12">
+                <h1>Brand directory</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ul class="brand-home__group">
+                    <th:block th:each="brand : ${brands}">
+                        <a class="brand-home__group__item" th:href="@{/shop/brand/{id}(id=${brand.id})}">
+                            <li>
+                                <!-- <p class="categpry__item__content" th:text="${brand.name}"></p> -->
+                                <img th:unless="${brand.name == 'Bag' or brand.name == 'Cosmetics'}"
+                                    th:src="${brand.imageName}" alt="${brand.name}"
+                                    height="80px" width="80px">
+                            </li>
+                        </a>
+                    </th:block>
+                </ul>
+
+            </div>
+        </div>
+    </div>
 
     <footer class="container-fluid footer" id="aboutus">
         <div th:include="./footer :: footer"></div>
@@ -47,4 +172,5 @@
     <script src="/js/slider.js"></script>
     <script src="/js/hiddenNavbar.js"></script>
 </body>
+
 </html>
