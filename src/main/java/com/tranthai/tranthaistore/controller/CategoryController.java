@@ -28,6 +28,8 @@ public class CategoryController {
     @GetMapping("/admin/category/add")
     public String getCategory(Model model){
         model.addAttribute("categoryDTO", new CategoryDTO());
+        model.addAttribute("titlePage", "ADD CATEGORY, ADMIN");
+
         return "categoryAdd";
     }
 
@@ -47,6 +49,8 @@ public class CategoryController {
     public String getCategoryById(@PathVariable int id, Model model) {
         Category category = categoryService.getCategoryById(id).get();
         model.addAttribute("categoryDTO", this.categoryConverter.toDTO(category));
+        model.addAttribute("titlePage", "UPDATE CATEGORY, ADMIN");
+
         return "categoryAdd";
     }
 

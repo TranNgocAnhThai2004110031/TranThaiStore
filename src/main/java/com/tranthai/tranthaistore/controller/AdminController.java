@@ -27,10 +27,10 @@ import com.tranthai.tranthaistore.service.UserService;
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
-    private CategoryService categoryService;  
+    private CategoryService categoryService;
 
-    @Autowired 
-    private ProductService productService; 
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private UserService userService;
@@ -42,84 +42,65 @@ public class AdminController {
     private BrandService brandService;
 
     @GetMapping()
-    public String adminHome(){
+    public String adminHome() {
         return "adminHome";
     }
 
     @GetMapping("/categories")
-    public String getCategories(Model model){
+    public String getCategories(Model model) {
         // model.addAttribute("categories", this.categoryService.getAllCategory());
         List<Category> categories = (List<Category>) model.getAttribute("categories");
         if (categories == null) {
             categories = this.categoryService.getAllCategory();
             model.addAttribute("categories", categories);
         }
+
+        model.addAttribute("titlePage", "CATEGORIES MANAGER, ADMIN");
         return "categories";
     }
 
-    // @GetMapping("/products")
-    // public String getProducts(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model){
-    //     // model.addAttribute("products", this.productService.getAllProduct());       
-    //     if (page <= 0) {
-    //         page = 1;
-    //     }
-    //     List<Product> products = (List<Product>) model.getAttribute("products");
-    //     if (products == null) {
-    //         // products = this.productService.getAllProduct();
-    //         Pageable pageable = PageRequest.of(page - 1, 10);
-    //         Page<Product> productPage = this.productService.getAllProductPage(pageable);
-    //         model.addAttribute("products", productPage.getContent());
-    //         model.addAttribute("currentPage", page);
-    //         model.addAttribute("totalPages", productPage.getTotalPages());
-    //     }
-    //     return "products";
-    // }
     @GetMapping("/products")
-    public String getProducts(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
+    public String getProducts(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            Model model) {
         if (page <= 0) {
             page = 1;
         }
-        
-        // List<Product> products = (List<Product>) model.getAttribute("products");
+
         String keyword = (String) model.getAttribute("keyword");
-        // if (products == null || keyword != null) {
-            Pageable pageable = PageRequest.of(page - 1, 10);
-            Page<Product> productPage;
 
-            if (keyword != null) {
-                productPage = this.productService.searchProductPage(keyword, pageable);
-            } else {
-                productPage = this.productService.getAllProductPage(pageable);
-            }
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page<Product> productPage;
 
-            model.addAttribute("products", productPage.getContent());
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", productPage.getTotalPages());
-        // }
-        
+        if (keyword != null) {
+            productPage = this.productService.searchProductPage(keyword, pageable);
+        } else {
+            productPage = this.productService.getAllProductPage(pageable);
+        }
+
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("titlePage", "PRODUCTS MANAGER, ADMIN");
+
         return "products";
     }
 
-
     @GetMapping("/users")
-    public String getUsers(Model model){
-        // model.addAttribute("users", this.userService.getAllUser());
+    public String getUsers(Model model) {
         List<User> users = (List<User>) model.getAttribute("users");
         if (users == null) {
             users = this.userService.getAllUser();
             model.addAttribute("users", users);
         }
+
+        model.addAttribute("titlePage", "USERS MANAGER, ADMIN");
+
         return "users";
     }
 
     @GetMapping("/bills")
-    public String getBills(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,Model model){
-        // model.addAttribute("bills", this.billService.getAllBill());
-        // List<Bill> bills = (List<Bill>) model.getAttribute("bills");
-        // if (bills == null) {
-        //     bills = this.billService.getAllBill();
-        //     model.addAttribute("bills", bills);
-        // }
+    public String getBills(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            Model model) {
         if (page <= 0) {
             page = 1;
         }
@@ -134,11 +115,14 @@ public class AdminController {
         model.addAttribute("bills", billPages.getContent());
         model.addAttribute("totalPages", billPages.getTotalPages());
         model.addAttribute("currentPage", page);
+        model.addAttribute("titlePage", "BILLS MANAGER, ADMIN");
+
         return "bills";
     }
 
     @GetMapping("/brands")
-    public String getBrand(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model){
+    public String getBrand(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            Model model) {
         if (page <= 0) {
             page = 1;
         }
@@ -155,7 +139,9 @@ public class AdminController {
         model.addAttribute("brands", brandPage.getContent());
         model.addAttribute("totalPages", brandPage.getTotalPages());
         model.addAttribute("currentPage", page);
+        model.addAttribute("titlePage", "BRANDS MANAGER, ADMIN");
+
         return "brands";
     }
-    
+
 }

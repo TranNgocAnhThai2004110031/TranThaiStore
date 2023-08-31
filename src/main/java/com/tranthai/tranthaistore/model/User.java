@@ -15,8 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-
-
 import lombok.Data;
 
 @Entity
@@ -31,7 +29,6 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
     private String email;
-    // private String username;
     private String password;
     @Transient
     private String confirmPassword;

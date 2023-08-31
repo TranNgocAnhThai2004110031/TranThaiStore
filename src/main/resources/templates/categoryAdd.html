@@ -14,52 +14,14 @@
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/responsive.css">
-    <link rel="icon" href="/images/logo-header.png">
-    <title>PhoneZ</title>
+    <link rel="icon" href="/images/Logo.png">
+    <title>TranThaiStore</title>
 </head>
 
 <body>
-    <div class="admin_page-background jumbotron text-center">
-        <div class="d-flex flex-column justify-content-center w-100 h-100">
+   
+    <div th:include="./headerAdmin :: div"></div>
 
-            <div class="d-flex flex-column justify-content-center align-items-center">
-                <h1 class="fw-light text-white m-0">CATEGORIES, ADMIN</h1>
-                <a href="/" class="text-decoration-none">
-                    <h5 class="fw-light text-white m-0">— Selling reputable phones —</h5>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="menu_bar_admin-Home">
-        <nav class="navbar_Admin_Home">
-            <div class="col-md-8"></div>
-            <div class="col-md-2 menu_bar_Admin_Home" id="Menu_bar_Admin_Home_Background">
-                <a class="nav-link" th:href="@{/admin}" href="#">
-                    <i class="fas fa-home"></i>
-                    <div>
-                        <span>
-                            Admin
-                            <br> Home
-                        </span>
-
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-2 menu_bar_Admin_Home" id="Menu_bar_Admin_Home_Background">
-                <a class="nav-link" th:href="@{/logout}" href="#">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <div>
-                        <span>
-                            Logout
-                        </span>
-
-                    </div>
-                </a>
-
-            </div>
-        </nav>
-
-    </div>
     <div class="container categoriesAdd_page_container">
         <div class="row">
             <div class="col-sm-4 categoriesAdd_page_form_input">
@@ -67,18 +29,14 @@
                     <input type="hidden" name="id" th:field="*{id}">
                     <div class="form-group categoriesAdd_page_group_input">
                         <label for="name">Name</label>
-
                         <input type="text" class="form-control" required th:field="*{name}" name="name" id="name"
                             placeholder="Enter name">
                     </div>
-
                     <button type="submit" class="categoriesAdd_page_btn"><span>Submit</span></button>
                 </form>
             </div>
         </div>
     </div>
-
-
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

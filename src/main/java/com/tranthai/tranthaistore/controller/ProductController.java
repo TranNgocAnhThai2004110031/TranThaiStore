@@ -1,9 +1,6 @@
 package com.tranthai.tranthaistore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +36,8 @@ public class ProductController {
         model.addAttribute("productDTO", new ProductDTO());
         model.addAttribute("categories", this.categoryService.getAllCategory());
         model.addAttribute("brands", this.brandService.getAllBrand());
+        model.addAttribute("titlePage", "ADD PRODUCT, ADMIN");
+
         return "productAdd";
     }
 
@@ -55,6 +54,7 @@ public class ProductController {
         model.addAttribute("productDTO", productDTO);
         model.addAttribute("categories", this.categoryService.getAllCategory());        
         model.addAttribute("brands", this.brandService.getAllBrand());
+        model.addAttribute("titlePage", "UPDATE PRODUCT, ADMIN");
 
         return "productAdd";
     }
@@ -68,12 +68,13 @@ public class ProductController {
     @GetMapping("/admin/viewproduct/{id}")
     public String viewAdminProduct(@PathVariable("id") Long id, Model model){
         model.addAttribute("product", this.productService.getProductById(id).get());
+        model.addAttribute("titlePage", "VIEW PRODUCT, ADMIN");
+
         return "viewProductAdmin";
     }
 
     @GetMapping("/admin/products/search")
     public String searchProduct(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes){
-        // redirectAttributes.addFlashAttribute("products", this.productService.searchProduct(keyword));
         redirectAttributes.addFlashAttribute("keyword", keyword);
         return "redirect:/admin/products";
     }

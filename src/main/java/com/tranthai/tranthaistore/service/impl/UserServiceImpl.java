@@ -50,9 +50,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User addUser(UserDTO userDTO) {
-        // if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
-        //     throw new UsernameNotFoundException("Password and confirm password do not match!!!");
-        // }
         User user = new User(userDTO.getFirstName(), 
             userDTO.getLastName(), userDTO.getEmail(),
             this.passwordEncoder.encode(userDTO.getPassword()),
@@ -74,7 +71,6 @@ public class UserServiceImpl implements UserService{
     public void updateUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword().toString()));
         user.setRoles(Arrays.asList(new Role("ROLE_USER")));
-        // user.setRoles(Arrays.asList(new Role(user.getRoles().toString())));
         this.userRepository.save(user);
     }
 

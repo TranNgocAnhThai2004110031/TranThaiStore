@@ -3,9 +3,9 @@
         <div class="d-flex flex-column justify-content-center w-100 h-100">
 
             <div class="d-flex flex-column justify-content-center align-items-center">
-                <h1 class="fw-light text-white m-0">WELLCOME BACK, ADMIN</h1>
+                <h1 class="fw-light text-white m-0" th:text="${titlePage != null ? titlePage : 'WELLCOME BACK, ADMIN'}"></h1>
                 <a href="/" class="text-decoration-none">
-                    <h5 class="fw-light text-white m-0">— Selling reputable phones —</h5>
+                    <h5 class="fw-light text-white m-0">— Selling prestigious fashion —</h5>
                 </a>
             </div>
         </div>

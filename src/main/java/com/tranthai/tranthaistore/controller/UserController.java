@@ -28,6 +28,8 @@ public class UserController {
     @GetMapping("/admin/user/add")
     public String getUser(Model model){
         model.addAttribute("userDTO", new UserDTO());
+        model.addAttribute("titlePage", "ADD USER, ADMIN");
+
         return "userAdd";
     }
 
@@ -49,6 +51,8 @@ public class UserController {
         UserDTO userDTO = this.userConverter.toDTO(this.userService.getUserById(id).get());
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("isUpdate", true);
+        model.addAttribute("titlePage", "UPDATE USER, ADMIN");
+
         return "userAdd";
     }
 

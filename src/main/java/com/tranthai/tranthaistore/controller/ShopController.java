@@ -1,6 +1,5 @@
 package com.tranthai.tranthaistore.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.tranthai.tranthaistore.model.Cart;
 import com.tranthai.tranthaistore.model.Product;
 import com.tranthai.tranthaistore.model.User;
 import com.tranthai.tranthaistore.service.BrandService;
-import com.tranthai.tranthaistore.service.CartService;
 import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
 import com.tranthai.tranthaistore.service.UserService;
@@ -47,9 +42,6 @@ public class ShopController {
     private CategoryService categoryService;
 
     @Autowired
-    private CartService cartService;
-
-    @Autowired
     private BrandService brandService;
 
     @Autowired
@@ -67,63 +59,19 @@ public class ShopController {
 
     @ModelAttribute("userId")
     public Long getCurrentUserId() {
-        // String email = userHelper.getCurrentUsername();
-        // if (email != null) {
-        //     User user = userService.getUserByEmail(email);
-        //     if (user != null) {
-        //         return user.getId();
-        //     }
-        //     return null;
-        // }
-        // return null;
         String email = userHelper.getCurrentUsername();
         User user = userService.getUserByEmail(email);
         return user != null ? user.getId() : null;
     }
 
-    // @GetMapping({ "/", "/home" })
-    // public String home(Model model, HttpSession session){
-    //     session.setAttribute("session", session);
-    //     String email =  this.userHelper.getCurrentUsername();
-    //     session.setAttribute("email", email);
-    //     User user = this.userService.getUserByEmail(email);
-    //     session.setAttribute("userid", user.getId());
-    //     model.addAttribute("products", this.productService.getAllProduct());
-    //     model.addAttribute("categories", categoryService.getAllCategory());
-    //     return "home";
-    // }
-
-    // @GetMapping("/shop")
-    // public String shop(Model model, HttpSession session, Authentication authentication) {
-    //     session.setAttribute("session", session);
-    //     String email =  this.userHelper.getCurrentUsername();
-    //     session.setAttribute("email", email);
-    //     User user = this.userService.getUserByEmail(email);
-    //     session.setAttribute("userid", user.getId());
-    //     model.addAttribute("categories", categoryService.getAllCategory());
-    //     model.addAttribute("products", productService.getAllProduct());
-    //     return "shop";
-    // }
     @GetMapping({ "/", "/home" })
     public String home(Model model, HttpSession session) {
         model.addAttribute("products", this.productService.getAllProductSort());
         model.addAttribute("categories", this.categoryService.getAllCategory());
         model.addAttribute("brands", this.brandService.getAllBrand());
-        // Lấy giỏ hàng từ session, nếu không có thì khởi tạo
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        // if (cart == null) {
-        //     cart = new HashMap<>();
-        //     session.setAttribute("cart", cart);
-        // }
-        // String email = (String) session.getAttribute("email");
-        // if (email != null) {   
-        //     Cart cartCurrent = this.cartService.getOrCreateCartForUser(this.userService.getUserByEmail(email)); 
-        //     cart = cartCurrent.getItems();
-        //     this.cartService.updateCartTotalsAndSession(session, cart);
-        //     session.setAttribute("cart", cart);
-        // }
         this.cartUtil.handleCartUpdate(session, cart);
-        return "home";
+        return "index";
     }
 
     @GetMapping("/shop")
@@ -165,7 +113,6 @@ public class ShopController {
 
     @GetMapping("/shop/category/{id}")
     public String shopByCategory(RedirectAttributes redirectAttributes, @PathVariable Long id, HttpSession session) {
-        // model.addAttribute("categories", this.categoryService.getAllCategory());
         List<Product> products = this.productService.getAllProductByCategory(id);
         String categoryName = this.categoryService.getCategoryById(id).get().getName();
         redirectAttributes.addFlashAttribute("products", products);
@@ -190,7 +137,6 @@ public class ShopController {
     public String search(@RequestParam String keyword, RedirectAttributes redirectAttributes) {
         keyword = keyword.trim();
         List<Product> results = this.productService.searchProduct(keyword);
-        // redirectAttributes.addAttribute("categories", this.categoryService.getAllCategory());
         redirectAttributes.addFlashAttribute("products", results);
         redirectAttributes.addAttribute("keyword", keyword);
         return "redirect:/shop";

@@ -1,6 +1,5 @@
 package com.tranthai.tranthaistore.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,21 +12,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import com.tranthai.tranthaistore.converter.ProductConverter;
 import com.tranthai.tranthaistore.model.Cart;
 import com.tranthai.tranthaistore.model.Product;
 import com.tranthai.tranthaistore.model.User;
+import com.tranthai.tranthaistore.service.BrandService;
 import com.tranthai.tranthaistore.service.CartService;
+import com.tranthai.tranthaistore.service.CategoryService;
 import com.tranthai.tranthaistore.service.ProductService;
 import com.tranthai.tranthaistore.service.UserService;
+import com.tranthai.tranthaistore.utils.CartUtil;
 import com.tranthai.tranthaistore.utils.UserUtil;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -41,7 +40,7 @@ public class CartController {
     private UserService userService;
 
     @Autowired
-    private ProductConverter productConverter;
+    private CartUtil cartUtil;
 
     @Autowired
     private UserUtil userHelper;
@@ -49,11 +48,11 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    // private static List<Product> cart;
+    @Autowired
+    private CategoryService categoryService;
 
-    // public static void clearCart() {
-    // cart = null;
-    // }
+    @Autowired
+    private BrandService brandService;
 
     private static Map<Long, Integer> cart;
 
@@ -73,9 +72,8 @@ public class CartController {
             Map<Long, Integer> userCartItem = userCart.getItems();
             userCartItem.putAll(sessionCart);
     
-            this.cartService.addCart(userCart); // Save the updated user cart
+            this.cartService.addCart(userCart); 
     
-            // Clear the session cart after merging
             session.removeAttribute("cart");
         }
     }
@@ -124,42 +122,6 @@ public class CartController {
         return "redirect:/shop";
     }
 
-    // private Map<Long, Integer> getOrCreateCartFromSession(HttpSession session) {
-    //     Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-    //     if (cart == null) {
-    //         cart = new HashMap<>();
-    //         session.setAttribute("cart", cart);
-    //     }
-    //     return cart;
-    // }
-
-    // private void updateCartItemQuantity(Map<Long, Integer> cart, Long productId, int quantity) {
-    //     if (cart.containsKey(productId)) {
-    //         int currentQuantity = cart.get(productId);
-    //         currentQuantity += quantity;
-    //         cart.put(productId, currentQuantity);
-    //     } else {
-    //         cart.put(productId, quantity);
-    //     }
-    // }
-
-    // private void updateCartTotalsAndSession(HttpSession session, Map<Long, Integer> cart) {
-    //     int count = 0;
-    //     double total = 0;
-
-    //     for (Map.Entry<Long, Integer> entry : cart.entrySet()) {
-    //         count += entry.getValue();
-    //         Product product = this.productService.getProductById(entry.getKey()).orElse(null);
-    //         if (product != null) {
-    //             total += product.getPrice() * entry.getValue();
-    //         }
-    //     }
-
-    //     session.setAttribute("cart", cart);
-    //     session.setAttribute("cartCount", count);
-    //     session.setAttribute("total", total);
-    // }
-
     @GetMapping()
     public String getCart(Model model, HttpSession session) {
         cart = (Map<Long, Integer>) session.getAttribute("cart");
@@ -176,10 +138,11 @@ public class CartController {
                 model.addAttribute("quantity" + product.getId(), cart.get(product.getId()));
             }
         }
-
+        this.cartUtil.handleCartUpdate(session, cart);
         this.cartService.updateCartTotalsAndSession(session, cart);
         model.addAttribute("products", products);
-
+        model.addAttribute("categories", this.categoryService.getAllCategory());
+        model.addAttribute("brands", this.brandService.getAllBrand());
         return "cart";
     }
 
@@ -187,7 +150,6 @@ public class CartController {
     public String updateCart(@PathVariable("id") Long id,
         @RequestParam("quantity") int quantity, HttpSession session) {
 
-        // Product product = this.productService.getProductById(id).get();
         cart = (Map<Long, Integer>) session.getAttribute("cart");
         String email = (String) session.getAttribute("email");
 
@@ -201,7 +163,6 @@ public class CartController {
                 this.cartService.addCart(cartCurrent);
             }
         }
-        
         
         return "redirect:/cart";
     }
@@ -224,75 +185,5 @@ public class CartController {
 
         return "redirect:/cart";
     }
-
-    // @PostMapping()
-    // public String addCart(@RequestParam("productId") Long productId,
-    // @RequestParam("quantity") int quantity, HttpSession session, Model model) {
-
-    // String email = (String) session.getAttribute("email");
-    // if (email != null) {
-    // email = session.getAttribute("email").toString();
-    // User user = this.userService.getUserByEmail(email);
-    // Cart cartCurrent = this.cartService.getCartByUserId(user.getId());
-    // Map<Long, Integer> item;
-    // if (cartCurrent == null) {
-    // item = new HashMap<>();
-    // item.put(productId, quantity);
-    // cartCurrent = new Cart();
-    // cartCurrent.setUser(user);
-    // cartCurrent.setItems(item);
-    // // this.cartService.addCart(cart);
-    // } else {
-    // item = cartCurrent.getItems();
-    // if (item.containsKey(productId)) {
-    // int currentQuantity = item.get(productId);
-    // currentQuantity += quantity;
-    // item.put(productId, currentQuantity);
-    // // this.cartService.addCart(cart);
-    // } else{
-    // item.put(productId, quantity);
-    // }
-    // // this.cartService.addCart(cart);
-    // }
-    // this.cartService.addCart(cartCurrent);
-    // int count = 0;
-    // double total = 0;
-    // for(Map.Entry<Long, Integer> entry : item.entrySet()){
-    // count += entry.getValue();
-    // Product product = this.productService.getProductById(entry.getKey()).get();
-    // total += product.getPrice() * entry.getValue();
-    // }
-    // session.setAttribute("cart", item);
-    // session.setAttribute("cartCount", count);
-    // session.setAttribute("total", total);
-    // } else {
-    // cart = (Map<Long, Integer>) session.getAttribute("cart");
-    // if (cart == null) {
-    // cart = new HashMap<>();
-    // }
-
-    // if (cart.containsKey(productId)) {
-    // int currentQuantity = cart.get(productId);
-    // currentQuantity += quantity;
-    // cart.put(productId, currentQuantity);
-    // } else {
-    // cart.put(productId, quantity);
-    // }
-
-    // int count = 0;
-    // double total = 0;
-    // for (Map.Entry<Long, Integer> entry : cart.entrySet()){
-    // count += entry.getValue();
-    // Product product = this.productService.getProductById(entry.getKey()).get();
-    // total += product.getPrice() * entry.getValue();
-    // }
-
-    // session.setAttribute("cart", cart);
-    // session.setAttribute("cartCount", count);
-    // session.setAttribute("total", total);
-    // }
-
-    // return "redirect:/shop";
-    // }
 
 }

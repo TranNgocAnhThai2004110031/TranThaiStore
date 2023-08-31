@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $(".background-slider__list").slick({
-        slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToShow: 1,
+        slidesToScroll: 1,
         arrows: false,
         autoplay: true,
         autoplaySpeed: 1000,
@@ -43,9 +43,6 @@ $(document).ready(function () {
                     slidesToScroll: 1
                 }
             }
-            // You can unslick at a given breakpoint now by adding:
-            // settings: "unslick"
-            // instead of a settings object
         ]
     });
 });

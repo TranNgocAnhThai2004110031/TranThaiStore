@@ -33,31 +33,30 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // Cấu hình quyền truy cập và bảo mật cho các đường dẫn trong ứng dụng
         http.authorizeRequests()
-                .antMatchers("/register**", "/", "/shop/**", "/shop**", "/cart/**") // Các đường dẫn này được cấp quyền truy cập cho tất cả
+                .antMatchers("/register**", "/", "/shop/**", "/shop**", "/cart/**") 
                 .permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN") // Đường dẫn bắt đầu bằng "/admin" yêu cầu quyền "ADMIN"
-                .antMatchers("/users/**").hasRole("USER") // Đường dẫn bắt đầu bằng "/users" yêu cầu quyền "USER"
-                .anyRequest().authenticated() // Các request còn lại yêu cầu đã đăng nhập
+                .antMatchers("/admin/**").hasRole("ADMIN") 
+                .antMatchers("/users/**").hasRole("USER") 
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/403") // Xử lý khi người dùng không có quyền truy cập
+                .accessDeniedPage("/403") 
                 .and()
                 .formLogin()
-                .loginPage("/login") // Đường dẫn đến trang đăng nhập
-                .successHandler(new SavedRequestAwareAuthenticationSuccessHandler()) // Xử lý sau khi đăng nhập thành công                                                               
-                .defaultSuccessUrl("/") // Chuyển hướng sau khi đăng nhập thành công đến trang "/"
-                .permitAll() // Cho phép tất cả truy cập trang đăng nhập
+                .loginPage("/login") 
+                .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())                                                               
+                .defaultSuccessUrl("/") 
+                .permitAll() 
                 .and()
                 .logout()
-                .invalidateHttpSession(true) // Hủy bỏ session sau khi đăng xuất
-                .clearAuthentication(true) // Xóa thông tin xác thực sau khi đăng xuất
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Đường dẫn đăng xuất
-                .logoutSuccessHandler(logoutSuccessHandler()) // Xử lý sau khi đăng xuất thành công
-                .permitAll(); // Cho phép tất cả truy cập trang đăng xuất
+                .invalidateHttpSession(true) 
+                .clearAuthentication(true) 
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) 
+                .logoutSuccessHandler(logoutSuccessHandler()) 
+                .permitAll();
 
-        return http.build(); // Trả về đối tượng SecurityFilterChain đã được cấu hình
+        return http.build(); 
     }
 
     private LogoutSuccessHandler logoutSuccessHandler() {
@@ -74,16 +73,11 @@ public class SecurityConfig {
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
-    // @Bean
-    // public UserDetailsService userDetailsService() {
-    // return new YourUserDetailsService(); // Thay YourUserDetailsService() bằng
-    // lớp cung cấp thông tin người dùng của bạn
-    // }
-
+   
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
         return (web) -> web.ignoring().antMatchers("/resources/**", "/static/**", "/images/**", "/css/**", "/js/**",
                 "/error");
-    }// Bỏ xác minh các package đường dẫn này
+    }
 
 }

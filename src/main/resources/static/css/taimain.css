@@ -271,11 +271,20 @@ body {
 .background-slider__item {
     background-size: cover;
     background-repeat: no-repeat;
-    height: 50vh;
-    width: 100%;
-    background-position: center;
+    height: 90vh;
+    width: 80%;
+    background-position: inherit;
     background-attachment: fixed !important;
     position: relative;
+}
+
+.background-slider__item--center{
+    background-position: center;
+}
+
+.background-slider__list img{
+    height: 80em;
+    width: 100%;
 }
 
 .background-slider__content {

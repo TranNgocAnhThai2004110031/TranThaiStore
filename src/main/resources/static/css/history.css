@@ -20,6 +20,7 @@
     height: 100% !important;
 }
 
+
 main {
     margin-top: 10%;
 }
@@ -88,5 +89,5 @@ input:hover {
 }
 
 #main{
-    padding: 10px;
+    padding: 5em 2em;
 }

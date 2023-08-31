@@ -1,122 +1,113 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
->
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
-      crossorigin="anonymous"
-    />
-    <link rel="icon" href="/images/logo-header.png" />
-    <title>PhoneZ</title>
-  </head>
-  <body>
-    <div class="container mt-5">
-      <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 text-right">
-              <p>
-                  <em>Receipt #:</em>
-                  <em th:text="${billDTO.id}"></em>
-              </p>
-          </div>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous" />
+  <link rel="icon" href="/images/Logo.png">
+  <title>TranThaiStore</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="icon" href="/images/logo-header.png">
+
+</head>
+
+<body>
+  <div th:include="./headerAdmin :: div"></div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 text-right">
+        <p>
+          <em>Receipt #:</em>
+          <em th:text="${billDTO.id}"></em>
+        </p>
       </div>
-      <div class="row">
-          <div class="text-center">
-              <h1>Receipt</h1>
-          </div>
-          <table class="table table-hover">
-              <thead>
-                  <tr>
-                      <th>Components</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>Name:</td>
-                      <td colspan="1" th:text="${billDTO.firstName} + ' ' + ${billDTO.lastName}"></td>
-                  </tr>
-                  <tr>
-                      <td>Adress:</td>
-                      <td th:text="${billDTO.address} + ', ' + ${billDTO.townCity}"></td>
-                  </tr>
-                  <tr>
-                      <td>Phone:</td>
-                      <td th:text="${billDTO.phoneNumber}"></td>
-                  </tr>
-                  <tr>
-                      <td>Email:</td>
-                      <td th:text="${billDTO.email}"></td>
-                  </tr>
-                  <tr>
-                      <td>Information:</td>
-                      <td colspan="2" th:text="${billDTO.addInformation}"></td>
-                  </tr>
-                  <tr>
-                    <td></td><td></td><td></td>
-                  </tr>
-                  <tr>
-                      <td colspan="2" style="font-weight: bold; font-size: 1.8em;">Product information:</td>
-                  </tr>
-              </tbody>
-          </table>
-          <table class="table table-hover">
-              <thead>
-                  <tr>
-                      <th>Product's name</th>
-                      <th>The number of products</th>
-                      <th>Product price</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr th:each="productName, idx : ${products}">
-                      <td th:text="${productName}" style="max-width: 50em;  text-align: justify;"></td>
-                      <td th:text="${quantities[idx.index]}" style="text-align: center; font-weight: 600;"></td>
-                      <td th:text="${#numbers.formatDecimal(prices[idx.index], 0, 'COMMA', 2, 'POINT') + 'USD'}"
-                          style="text-align: end; font-weight: 600;"></td>
-                  </tr>
-                  <tr>
-                      <td colspan="2" style="font-weight: bold;">Total payment:</td>
-                      <td>
-                          <strong><span
-                                  th:text="${#numbers.formatDecimal(billDTO.price, 0, 'COMMA', 2, 'POINT')+ ' '}"></span>
-                              USD</strong>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
+    </div>
+    <div class="row">
+      <div class="text-center">
+        <h1>Receipt</h1>
       </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Components</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Name:</td>
+            <td colspan="1" th:text="${billDTO.firstName} + ' ' + ${billDTO.lastName}"></td>
+          </tr>
+          <tr>
+            <td>Adress:</td>
+            <td th:text="${billDTO.address} + ', ' + ${billDTO.townCity}"></td>
+          </tr>
+          <tr>
+            <td>Phone:</td>
+            <td th:text="${billDTO.phoneNumber}"></td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td th:text="${billDTO.email}"></td>
+          </tr>
+          <tr>
+            <td>Information:</td>
+            <td colspan="2" th:text="${billDTO.addInformation}"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="2" style="font-weight: bold; font-size: 1.8em;">Product information:</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Product's name</th>
+            <th>The number of products</th>
+            <th>Product price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="productName, idx : ${products}">
+            <td th:text="${productName}" style="max-width: 50em;  text-align: justify;"></td>
+            <td th:text="${quantities[idx.index]}" style="text-align: center; font-weight: 600;"></td>
+            <td th:text="${#numbers.formatDecimal(prices[idx.index], 0, 'COMMA', 2, 'POINT') + 'USD'}"
+              style="text-align: end; font-weight: 600;"></td>
+          </tr>
+          <tr>
+            <td colspan="2" style="font-weight: bold;">Total payment:</td>
+            <td style="text-align: end;">
+              <strong><span th:text="${#numbers.formatDecimal(billDTO.price, 0, 'COMMA', 2, 'POINT')+ ' '}"></span>
+                USD</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>

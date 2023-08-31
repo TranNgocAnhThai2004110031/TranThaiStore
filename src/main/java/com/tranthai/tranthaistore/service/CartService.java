@@ -19,5 +19,4 @@ public interface CartService {
     void updateCartItemQuantity(Map<Long, Integer> cart, Long productId, int quantity, boolean update);
     void updateCartTotalsAndSession(HttpSession session, Map<Long, Integer> cart);
     void removeCartById(Long id);
-    // void updateCart(Cart cart);
 }

@@ -69,14 +69,6 @@ public class BillConverter {
             }
         }
 
-        // List<Double> prices = new ArrayList<>();
-        // for (Product product : productCurrent) {
-        //     for (int i = 0; i < products.size(); i++) {
-        //         if (product.getName().equals(products.get(i))) {
-        //             prices.add(product.getPrice() * quantities.get(i));
-        //         }
-        //     }
-        // }
         Map<String, Double> productPriceMap = new HashMap<>();
         for (Product product : productCurrent) {
             productPriceMap.put(product.getName(), product.getPrice());

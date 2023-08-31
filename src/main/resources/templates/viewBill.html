@@ -12,9 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
         integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="icon" href="/images/Logo.png">
     <title>View bills</title>
-
 </head>
 
 <body>
@@ -80,7 +79,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="font-weight: bold;">Total payment:</td>
-                        <td>
+                        <td style="text-align: end;">
                             <strong><span
                                     th:text="${#numbers.formatDecimal(billDTO.price, 0, 'COMMA', 2, 'POINT')+ ' '}"></span>
                                 USD</strong>
@@ -90,7 +89,6 @@
             </table>
         </div>
     </div>
-
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

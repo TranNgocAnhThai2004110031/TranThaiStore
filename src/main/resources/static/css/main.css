@@ -1556,7 +1556,7 @@ main .card {
   box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px;
   height: 100%;
   width: 64% !important;
-  margin-top: 14%;
+  margin-top: -5%;
   width: 50%;
 }
 
@@ -1706,7 +1706,7 @@ main .card {
 /* User add page */
 .userAdd_container {
   font-size: 20px;
-  margin-top: 13%;
+  margin-top: -3.5%;
   margin-left: 27%;
   width: 49%;
   padding-bottom: 5%;

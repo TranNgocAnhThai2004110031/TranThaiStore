@@ -34,8 +34,6 @@ public class Product {
     private int quantity;
     @Column(name = "image_name")
     private String imageName;
-    // @Column(name = "active")
-    // private Boolean active;
 
     public Product() {
     }

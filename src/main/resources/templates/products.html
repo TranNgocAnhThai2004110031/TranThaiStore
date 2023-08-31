@@ -13,27 +13,22 @@
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/responsive.css">
-    <link rel="icon" href="/images/logo-header.png">
-    <title>PhoneZ</title>
+    <link rel="icon" href="/images/Logo.png">
+    <title>TranThaiStore</title>
 </head>
 
 <body>
-    <!-- Header -->
+    
     <div th:include="./headerAdmin :: div"></div>
-    <!-- Header -->
+    
     <div class="container product_container">
         <div class="categories_page_container-input">
             <form class="row no-gutters justify-content-center products_page_container-form" action="/admin/products/search"
                 method="get">
-
                 <input type="text" placeholder="Search" class="input_categories" name="keyword" th:value="${keyword}">
-
                 <button class="fas fa-search products_page_container-btn_s" name="query" type="submit"></button>
-
             </form>
-
         </div>
-
         <a th:href="@{/admin/product/add}" style="margin: 20px 0"
             class="btn btn-primary product_page-btn_add_Product"><span>Add Product</span> </a>
         <table class="table product_page_table">
@@ -68,18 +63,6 @@
                             class="btn btn-warning categories_page-btn_warning"><i class="fas fa-edit"></i></a></td>
 
                 </tr>
-                <!-- Hiển thị phân trang -->
-                <!-- <tr>
-                    <td colspan="7">
-                        <div>
-                            <ul class="pagination">
-                                <li th:each="i : ${#numbers.sequence(1, totalPages)}">
-                                    <a th:href="@{/admin/products(page=${i})}" th:text="${i}" class="product__page" th:classappend="${currentPage == i} ? 'active' : ''"></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>             -->
                 <tr th:if="${products != null and !#lists.isEmpty(products)}">
                     <td colspan="8">
                         <div>
@@ -97,14 +80,9 @@
                         </div>
                     </td>
                 </tr>
-                
-                
-                <!-- Kết thúc hiển thị phân trang -->
-
             </tbody>
         </table>
     </div>
-
 
     <script src="/js/main.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

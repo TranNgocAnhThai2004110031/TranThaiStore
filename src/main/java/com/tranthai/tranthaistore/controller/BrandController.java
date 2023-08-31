@@ -26,6 +26,8 @@ public class BrandController {
     @GetMapping("/admin/brand/add")
     public String getBrand(Model model){
         model.addAttribute("brandDTO", new BrandDTO());
+        model.addAttribute("titlePage", "ADD BRAND, ADMIN");
+
         return "brandAdd";
     }
 
@@ -42,6 +44,8 @@ public class BrandController {
         Brand brand = this.brandService.getBrandById(id).get();
         BrandDTO brandDTO = this.brandConverter.toDTO(brand);
         model.addAttribute("brandDTO", brandDTO);
+        model.addAttribute("titlePage", "UPDATE BRAND, ADMIN");
+
         return "brandAdd";
     }
 
